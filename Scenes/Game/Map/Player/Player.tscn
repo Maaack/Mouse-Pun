@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Scenes/Game/Map/Player/SpriteFrames.tres" type="SpriteFrames" id=1]
+[ext_resource path="res://Scenes/Game/Map/Player/Player.gd" type="Script" id=47]
+
+[node name="Player" type="Node2D"]
+script = ExtResource( 47 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+position = Vector2( 0, -13.0683 )
+scale = Vector2( 0.063, 0.063 )
+frames = ExtResource( 1 )
+animation = "walk"
+
+[node name="Camera2D" type="Camera2D" parent="AnimatedSprite"]
+position = Vector2( 0, 207.433 )
+scale = Vector2( 15.873, 15.873 )
+current = true
+zoom = Vector2( 0.25, 0.25 )
+smoothing_enabled = true
+
+[node name="Tween" type="Tween" parent="."]
