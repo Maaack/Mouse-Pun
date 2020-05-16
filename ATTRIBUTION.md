@@ -17,3 +17,9 @@ Author: [Zuhria Alfitra](https://www.gameart2d.com/about.html)
 Source: [GameArt2D](https://www.gameart2d.com/cat-and-dog-free-sprites.html)  
 License: [CC0 1.0 Universal (CC0 1.0)
 Public Domain Dedication](https://creativecommons.org/publicdomain/zero/1.0/)  
+
+#### Icons
+Author: [Jesse (GentleCatStudio)](https://itch.io/profile/gentlecatstudio)  
+Source: [itch.io](https://gentlecatstudio.itch.io/rpg-items)  
+License: [CC0 1.0 Universal (CC0 1.0)
+Public Domain Dedication](https://creativecommons.org/publicdomain/zero/1.0/) 

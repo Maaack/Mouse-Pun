@@ -9,6 +9,21 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "AbstractUnit",
+"class": "AbstractContainer",
+"language": "GDScript",
+"path": "res://Resources/Abstract/AbstractContainer.gd"
+}, {
+"base": "AbstractUnit",
+"class": "AbstractQuantity",
+"language": "GDScript",
+"path": "res://Resources/Abstract/AbstractQuantity.gd"
+}, {
+"base": "Resource",
+"class": "AbstractUnit",
+"language": "GDScript",
+"path": "res://Resources/Abstract/AbstractUnit.gd"
+}, {
 "base": "Node2D",
 "class": "Map2D",
 "language": "GDScript",
@@ -20,6 +35,9 @@ _global_script_classes=[ {
 "path": "res://Scenes/Game/Map/Player/Player.gd"
 } ]
 _global_script_class_icons={
+"AbstractContainer": "",
+"AbstractQuantity": "",
+"AbstractUnit": "",
 "Map2D": "",
 "Player": ""
 }
