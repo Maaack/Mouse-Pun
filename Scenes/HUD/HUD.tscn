@@ -1,10 +1,12 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://Scenes/HUD/ProgressBar/ProgressBar.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Scenes/HUD/BodyInformation/BodyInformation.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Scenes/HUD/HUD.gd" type="Script" id=2]
 
 [node name="HUD" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -26,6 +28,11 @@ margin_top = 8.0
 margin_right = 1016.0
 margin_bottom = 592.0
 
-[node name="ProgressBar" parent="MarginContainer/Control" instance=ExtResource( 1 )]
-margin_right = 1008.0
-margin_bottom = 584.0
+[node name="TopLeft" type="Control" parent="MarginContainer/Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BodyInformation" parent="MarginContainer/Control/TopLeft" instance=ExtResource( 1 )]

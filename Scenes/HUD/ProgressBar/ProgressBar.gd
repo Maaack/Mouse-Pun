@@ -19,7 +19,7 @@ func set_container(value:AbstractContainer):
 func _set_counter():
 	if container == null:
 		return
-	counter_node.quantity = container.contents.front()
+	counter_node.container = container
 
 func _update_progress_bar():
 	if container == null:

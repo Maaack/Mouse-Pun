@@ -17,6 +17,8 @@ onready var animated_sprite_node = $AnimatedSprite
 onready var tween_node = $Tween
 onready var grid_node = get_parent()
 
+export(Resource) var body_container
+
 var last_move_direction : Vector2 = Vector2(0, 0)
 
 func _ready():
