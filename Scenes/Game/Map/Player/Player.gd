@@ -8,6 +8,9 @@ const WALK_ANIMATION = 'walk'
 const RUN_ANIMATION = 'run'
 const HURT_ANIMATION = 'hurt'
 
+const CALORIES_CONTAINER = 'CALORIES_CONTAINER'
+const HEALTH_CONTAINER = 'HEALTH_CONTAINER'
+
 const UP_VECTOR = Vector2(0,-1)
 const DOWN_VECTOR = Vector2(0,1)
 const LEFT_VECTOR = Vector2(-1,0)
@@ -17,7 +20,10 @@ onready var animated_sprite_node = $AnimatedSprite
 onready var tween_node = $Tween
 onready var grid_node = get_parent()
 
-export(Resource) var body_container
+export(Resource) var body_container setget set_body_container
+
+var calories_container : AbstractContainer
+var health_container : AbstractContainer
 
 var last_move_direction : Vector2 = Vector2(0, 0)
 
@@ -47,6 +53,7 @@ func _get_move_vector(input):
 		return RIGHT_VECTOR
 
 func move_to(target_position:Vector2):
+	burn_calories(5)
 	animated_sprite_node.play(WALK_ANIMATION)
 	set_process(false)
 	var sprite_frames = animated_sprite_node.get_sprite_frames()
@@ -68,4 +75,25 @@ func _wait_to_idle():
 	yield(animated_sprite_node, "animation_finished")
 	animated_sprite_node.play(IDLE_ANIMATION)
 	set_process(true)
-	
+
+func set_body_container(value:AbstractContainer):
+	if value == null:
+		return
+	body_container = value
+	for container in value.contents:
+		if container is AbstractContainer:
+			match container.machine_name:
+				HEALTH_CONTAINER:
+					health_container = container
+				CALORIES_CONTAINER:
+					calories_container = container
+
+func burn_calories(value:int):
+	consume_calories(-value)
+
+func consume_calories(value:int):
+	if calories_container == null:
+		return
+	var calories = calories_container.contents.front()
+	if calories is AbstractQuantity:
+		calories.quantity += value
