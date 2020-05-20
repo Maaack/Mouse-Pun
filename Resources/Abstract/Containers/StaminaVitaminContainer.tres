@@ -1,0 +1,13 @@
+[gd_resource type="Resource" load_steps=3 format=2]
+
+[ext_resource path="res://Resources/Abstract/AbstractContainer.gd" type="Script" id=1]
+[ext_resource path="res://Resources/Abstract/Quantities/StaminaVitaminQuantity.tres" type="Resource" id=2]
+
+[resource]
+script = ExtResource( 1 )
+machine_name = "STAMINA_VITAMIN_CONTAINER"
+readable_name = ""
+numerical_unit = 0
+slot_limit = 1
+quantity_limit = -1.0
+contents = [ ExtResource( 2 ) ]

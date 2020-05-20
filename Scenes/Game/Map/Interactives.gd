@@ -7,8 +7,8 @@ var map_node : Map2D
 func _ready():
 	for child in get_children():
 		set_cellv(world_to_map(child.position), CELL_TYPES.PLAYER)
-	var temp_node = self
 	# Sketch
+	var temp_node = self
 	while (not temp_node is Map2D):
 		temp_node = temp_node.get_parent()
 	map_node = temp_node

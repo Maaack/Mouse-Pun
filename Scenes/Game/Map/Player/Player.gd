@@ -24,12 +24,20 @@ export(Resource) var body_container setget set_body_container
 
 var calories_container : AbstractContainer
 var health_container : AbstractContainer
+var map_node : Map2D
+var inventory : AbstractContainer
 
 var last_move_direction : Vector2 = Vector2(0, 0)
 
 func _ready():
 	animated_sprite_node.play(IDLE_ANIMATION)
 	animated_sprite_node.playing = true
+	inventory = AbstractContainer.new()
+	# Sketch
+	var temp_node = self
+	while (not temp_node is Map2D):
+		temp_node = temp_node.get_parent()
+	map_node = temp_node
 
 func _process(_delta):
 	var move_vector = _get_move_vector(Input)
@@ -74,6 +82,13 @@ func bump_against():
 func _wait_to_idle():
 	yield(animated_sprite_node, "animation_finished")
 	animated_sprite_node.play(IDLE_ANIMATION)
+	var container = map_node.pickup_from_position(position)
+	if container is AbstractContainer:
+		for quantity in container.contents:
+			if quantity is AbstractQuantity:
+				print("I picked up a ", quantity.readable_name)
+				inventory.add_content(quantity)
+				print(inventory)
 	set_process(true)
 
 func set_body_container(value:AbstractContainer):
