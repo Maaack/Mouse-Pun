@@ -37,7 +37,7 @@ func get_container_in_cellv(cell_vector:Vector2) -> AbstractContainer:
 		var contents : Array = object_dict[cell_vector]
 		if contents != null:
 			for content in contents:
-				if content is Pickup:
+				if is_instance_valid(content) and content is Pickup:
 					container.add_content(content.quantity)
 					content.queue_free()
 	return container

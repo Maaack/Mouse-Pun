@@ -16,6 +16,9 @@ const DOWN_VECTOR = Vector2(0,1)
 const LEFT_VECTOR = Vector2(-1,0)
 const RIGHT_VECTOR = Vector2(1,0)
 
+signal picked_up
+signal quantity_updated
+
 onready var animated_sprite_node = $AnimatedSprite
 onready var tween_node = $Tween
 onready var grid_node = get_parent()
@@ -82,13 +85,18 @@ func bump_against():
 func _wait_to_idle():
 	yield(animated_sprite_node, "animation_finished")
 	animated_sprite_node.play(IDLE_ANIMATION)
-	var container = map_node.pickup_from_position(position)
+	_pickup_from_position(position)
+	set_process(true)
+
+func _pickup_from_position(vector:Vector2):
+	var container = map_node.pickup_from_position(vector)
 	if container is AbstractContainer:
 		for quantity in container.contents:
+			emit_signal("picked_up", quantity)
 			if quantity is AbstractQuantity:
-				inventory.add_quantity(quantity)
-				print(inventory)
-	set_process(true)
+				var final_quantity = inventory.add_quantity(quantity)
+				emit_signal("quantity_updated", final_quantity)
+				
 
 func set_body_container(value:AbstractContainer):
 	if value == null:

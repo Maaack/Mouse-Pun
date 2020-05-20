@@ -23,4 +23,3 @@ func is_cellv_type(cell_vector:Vector2, type:String) -> bool:
 
 func pickup_from_position(position:Vector2):
 	return pickups_grid_node.get_container_at_position(position)
-		
