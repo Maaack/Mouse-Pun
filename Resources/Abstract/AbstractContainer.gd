@@ -49,7 +49,18 @@ func add_content(value):
 	var new_contents = contents.duplicate()
 	new_contents.push_back(value)
 	set_contents(new_contents)
+	return new_contents
 
+func add_quantity(value:AbstractQuantity):
+	if value == null:
+		return
+	var content = find(value.machine_name)
+	if content and content is AbstractQuantity:
+		content.quantity += value.quantity
+		return content
+	else:
+		return add_content(value)
+		
 func find(machine_name_query:String):
 	for content in contents:
 		if content is AbstractUnit and content.machine_name == machine_name_query:

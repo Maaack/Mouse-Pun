@@ -86,8 +86,7 @@ func _wait_to_idle():
 	if container is AbstractContainer:
 		for quantity in container.contents:
 			if quantity is AbstractQuantity:
-				print("I picked up a ", quantity.readable_name)
-				inventory.add_content(quantity)
+				inventory.add_quantity(quantity)
 				print(inventory)
 	set_process(true)
 
