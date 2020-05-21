@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=2]
+[gd_scene load_steps=38 format=2]
 
 [ext_resource path="res://Scenes/Game/Map/Tilesets/Ground.tres" type="TileSet" id=1]
 [ext_resource path="res://Scenes/Game/Map/Tilesets/Grounded.tres" type="TileSet" id=2]
@@ -12,6 +12,12 @@
 [ext_resource path="res://Resources/Abstract/AbstractQuantity.gd" type="Script" id=10]
 [ext_resource path="res://Assets/Sprites/icons32/farm_32_sprite_006.png" type="Texture" id=11]
 [ext_resource path="res://Assets/Sprites/icons32/farm_32_sprite_000.png" type="Texture" id=12]
+[ext_resource path="res://Assets/Sprites/icons32/farm_32_sprite_005.png" type="Texture" id=13]
+[ext_resource path="res://Assets/Sprites/icons32/farm_32_sprite_011.png" type="Texture" id=14]
+[ext_resource path="res://Scenes/Game/Map/Pickup/RedMushroom.tscn" type="PackedScene" id=15]
+[ext_resource path="res://Assets/Sprites/icons32/farm_32_sprite_004.png" type="Texture" id=16]
+[ext_resource path="res://Scenes/Game/Map/Pickup/BrownMushroom.tscn" type="PackedScene" id=17]
+[ext_resource path="res://Scenes/Game/Map/Pickup/Apple.tscn" type="PackedScene" id=18]
 
 [sub_resource type="Resource" id=1]
 script = ExtResource( 10 )
@@ -106,6 +112,62 @@ script = ExtResource( 10 )
 machine_name = "NUTS_QUANTITY"
 readable_name = "Nuts"
 icon = ExtResource( 11 )
+numerical_unit = 0
+quantity = 1.0
+
+[sub_resource type="Resource" id=13]
+script = ExtResource( 10 )
+machine_name = "APPLES_QUANTITY"
+readable_name = "Apples"
+icon = ExtResource( 14 )
+numerical_unit = 0
+quantity = 1.0
+
+[sub_resource type="Resource" id=14]
+script = ExtResource( 10 )
+machine_name = "BROWN_MUSHROOMS_QUANTITY"
+readable_name = "Brown Mushrooms"
+icon = ExtResource( 16 )
+numerical_unit = 0
+quantity = 1.0
+
+[sub_resource type="Resource" id=15]
+script = ExtResource( 10 )
+machine_name = "BROWN_MUSHROOMS_QUANTITY"
+readable_name = "Brown Mushrooms"
+icon = ExtResource( 16 )
+numerical_unit = 0
+quantity = 1.0
+
+[sub_resource type="Resource" id=16]
+script = ExtResource( 10 )
+machine_name = "BROWN_MUSHROOMS_QUANTITY"
+readable_name = "Brown Mushrooms"
+icon = ExtResource( 16 )
+numerical_unit = 0
+quantity = 1.0
+
+[sub_resource type="Resource" id=17]
+script = ExtResource( 10 )
+machine_name = "BROWN_MUSHROOMS_QUANTITY"
+readable_name = "Brown Mushrooms"
+icon = ExtResource( 16 )
+numerical_unit = 0
+quantity = 1.0
+
+[sub_resource type="Resource" id=18]
+script = ExtResource( 10 )
+machine_name = "RED_MUSHROOMS_QUANTITY"
+readable_name = "Red Mushrooms"
+icon = ExtResource( 13 )
+numerical_unit = 0
+quantity = 1.0
+
+[sub_resource type="Resource" id=19]
+script = ExtResource( 10 )
+machine_name = "BROWN_MUSHROOMS_QUANTITY"
+readable_name = "Brown Mushrooms"
+icon = ExtResource( 16 )
 numerical_unit = 0
 quantity = 1.0
 
@@ -210,6 +272,34 @@ quantity = SubResource( 11 )
 [node name="Nut5" parent="Pickups/PickupMap" instance=ExtResource( 9 )]
 position = Vector2( 176, 401 )
 quantity = SubResource( 12 )
+
+[node name="Apple" parent="Pickups/PickupMap" instance=ExtResource( 18 )]
+position = Vector2( 272, 273 )
+quantity = SubResource( 13 )
+
+[node name="BrownMushroom" parent="Pickups/PickupMap" instance=ExtResource( 17 )]
+position = Vector2( 464, 369 )
+quantity = SubResource( 14 )
+
+[node name="BrownMushroom2" parent="Pickups/PickupMap" instance=ExtResource( 17 )]
+position = Vector2( 528, 337 )
+quantity = SubResource( 15 )
+
+[node name="BrownMushroom3" parent="Pickups/PickupMap" instance=ExtResource( 17 )]
+position = Vector2( 528, 433 )
+quantity = SubResource( 16 )
+
+[node name="BrownMushroom4" parent="Pickups/PickupMap" instance=ExtResource( 17 )]
+position = Vector2( 656, 593 )
+quantity = SubResource( 17 )
+
+[node name="RedMushroom" parent="Pickups/PickupMap" instance=ExtResource( 15 )]
+position = Vector2( 560, 337 )
+quantity = SubResource( 18 )
+
+[node name="BrownMushroom5" parent="Pickups/PickupMap" instance=ExtResource( 17 )]
+position = Vector2( 560, 305 )
+quantity = SubResource( 19 )
 
 [node name="Interactives" type="Node2D" parent="." groups=[
 "INTERACTIVE",

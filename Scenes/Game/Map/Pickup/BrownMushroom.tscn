@@ -1,0 +1,19 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Resources/Abstract/AbstractQuantity.gd" type="Script" id=1]
+[ext_resource path="res://Scenes/Game/Map/Pickup/Pickup.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Assets/Sprites/icons32/farm_32_sprite_004.png" type="Texture" id=3]
+
+[sub_resource type="Resource" id=1]
+script = ExtResource( 1 )
+machine_name = "BROWN_MUSHROOMS_QUANTITY"
+readable_name = "Brown Mushrooms"
+icon = ExtResource( 3 )
+numerical_unit = 0
+quantity = 1.0
+
+[node name="BrownMushroom" instance=ExtResource( 2 )]
+quantity = SubResource( 1 )
+
+[node name="Sprite" parent="." index="0"]
+texture = ExtResource( 3 )
