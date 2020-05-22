@@ -8,5 +8,6 @@ script = ExtResource( 1 )
 machine_name = "STAMINA_VITAMIN_QUANTITY"
 readable_name = "Stamina Vitamin"
 icon = ExtResource( 2 )
+taxonomy = ""
 numerical_unit = 0
 quantity = 0.0

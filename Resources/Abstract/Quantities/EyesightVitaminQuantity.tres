@@ -8,5 +8,6 @@ script = ExtResource( 1 )
 machine_name = "EYESIGHT_VITAMIN_QUANTITY"
 readable_name = "Eyesight Vitamin"
 icon = ExtResource( 2 )
+taxonomy = ""
 numerical_unit = 0
 quantity = 0.0

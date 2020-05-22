@@ -48,8 +48,8 @@ func _update_counter():
 		var value_str = "%.*f"
 		var precision = _get_continuous_precision(value)
 		value = value_str % [precision, value]
-	if container != null and container.quantity_limit >= 0:
-		value = value + (" / %d" % container.quantity_limit)
+#	if container != null and container.quantity_limit >= 0:
+#		value = value + (" / %d" % container.quantity_limit)
 	_set_counter(value)
 
 func _set_counter(value:String):

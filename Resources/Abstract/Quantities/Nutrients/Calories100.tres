@@ -5,8 +5,9 @@
 
 [resource]
 script = ExtResource( 1 )
-machine_name = "CALORIES_QUANTITY"
+machine_name = "CALORIES"
 readable_name = "Calories"
 icon = ExtResource( 2 )
+taxonomy = ""
 numerical_unit = 0
 quantity = 100.0

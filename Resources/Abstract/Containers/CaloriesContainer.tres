@@ -1,13 +1,12 @@
 [gd_resource type="Resource" load_steps=3 format=2]
 
 [ext_resource path="res://Resources/Abstract/AbstractContainer.gd" type="Script" id=1]
-[ext_resource path="res://Resources/Abstract/Quantities/CaloriesQuantity.tres" type="Resource" id=2]
+[ext_resource path="res://Resources/Abstract/Quantities/Nutrients/Calories100.tres" type="Resource" id=2]
 
 [resource]
 script = ExtResource( 1 )
 machine_name = "CALORIES_CONTAINER"
 readable_name = ""
+taxonomy = ""
 numerical_unit = 0
-slot_limit = 1
-quantity_limit = 1000.0
 contents = [ ExtResource( 2 ) ]

@@ -91,11 +91,14 @@ func _wait_to_idle():
 func _pickup_from_position(vector:Vector2):
 	var container = map_node.pickup_from_position(vector)
 	if container is AbstractContainer:
-		for quantity in container.contents:
-			emit_signal("picked_up", quantity)
-			if quantity is AbstractQuantity:
-				var final_quantity = inventory.add_quantity(quantity)
-				emit_signal("quantity_updated", final_quantity)
+		for content in container.contents:
+			emit_signal("picked_up", content)
+			print("picked_up ", content)
+			if content is AbstractUnit:
+				inventory.add_content(content)
+				var quantity = inventory.find_quantity(content.machine_name)
+				print("quantity_updated ", quantity)
+				emit_signal("quantity_updated", quantity)
 				
 
 func set_body_container(value:AbstractContainer):

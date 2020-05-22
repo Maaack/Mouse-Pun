@@ -36,8 +36,18 @@ func split(value:float) -> AbstractQuantity:
 	split_quantity.quantity = value
 	return split_quantity
 
-func add(value:AbstractQuantity, conserve_quantities:bool=true):
+func copy_from(value:AbstractUnit):
+	if value == null:
+		return
+	if value.has_method('set_quantity'):
+		quantity = value.quantity
+	.copy_from(value)
+
+func add(value, conserve_quantities:bool=true):
 	if not is_instance_valid(value):
+		return
+	if not value.has_method('set_quantity'):
+		print("Error: Adding incompatible types ", str(value), " and ", str(self))
 		return
 	if value.machine_name != machine_name:
 		print("Error: Adding incompatible quantities ", str(value), " and ", str(self))

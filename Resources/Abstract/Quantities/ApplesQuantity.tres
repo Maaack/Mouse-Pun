@@ -8,5 +8,6 @@ script = ExtResource( 1 )
 machine_name = "APPLES_QUANTITY"
 readable_name = "Apples"
 icon = ExtResource( 2 )
+taxonomy = ""
 numerical_unit = 0
 quantity = 1.0

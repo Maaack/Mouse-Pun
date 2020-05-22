@@ -1,4 +1,15 @@
-extends AbstractUnit
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Scenes/Game/Map/Item/Item.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Resources/Abstract/Quantities/Nutrients/HealingVitamin20.tres" type="Resource" id=4]
+[ext_resource path="res://Resources/Abstract/Quantities/Nutrients/Calories100.tres" type="Resource" id=5]
+
+[sub_resource type="StreamTexture" id=1]
+flags = 4
+load_path = "res://.import/farm_32_sprite_011.png-ec8c69652b2b8edfb29ef23390291a5b.stex"
+
+[sub_resource type="GDScript" id=2]
+script/source = "extends AbstractUnit
 
 
 class_name AbstractContainer
@@ -8,10 +19,10 @@ export(Array, Resource) var contents : Array setget set_contents
 var quantities : Array = []
 
 func _to_string():
-	var to_string = "%s: [" % machine_name
+	var to_string = \"%s: [\" % machine_name
 	for content in contents:
-		to_string += str(content) + ","
-	return to_string + "]"
+		to_string += str(content) + \",\"
+	return to_string + \"]\"
 
 func set_contents(value:Array):
 	if value == null:
@@ -22,7 +33,7 @@ func _return_valid_array(array:Array):
 	var final_array : Array = []
 	for unit in array:
 		if unit is AbstractUnit:
-			final_array.append(unit.duplicate())
+			final_array.append(unit)
 	return final_array
 
 func _reset_quantities():
@@ -71,3 +82,19 @@ func find_content(machine_name_query:String):
 	for content in contents:
 		if content is AbstractUnit and content.machine_name == machine_name_query:
 			return content
+"
+
+[sub_resource type="Resource" id=3]
+script = SubResource( 2 )
+machine_name = "APPLE"
+readable_name = "Apple"
+icon = SubResource( 1 )
+taxonomy = "FOOD"
+numerical_unit = 0
+contents = [ ExtResource( 4 ), ExtResource( 5 ) ]
+
+[node name="Apple" instance=ExtResource( 1 )]
+unit = SubResource( 3 )
+
+[node name="Sprite" parent="." index="0"]
+texture = SubResource( 1 )

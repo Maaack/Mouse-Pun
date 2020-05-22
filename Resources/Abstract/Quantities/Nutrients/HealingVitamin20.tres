@@ -1,0 +1,11 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://Resources/Abstract/AbstractQuantity.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+machine_name = "HEALING_VITAMIN"
+readable_name = "Healing Vitamin"
+taxonomy = "DIGESTABLE"
+numerical_unit = 0
+quantity = 20.0

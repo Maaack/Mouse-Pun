@@ -1,4 +1,4 @@
-[gd_scene load_steps=38 format=2]
+[gd_scene load_steps=44 format=2]
 
 [ext_resource path="res://Scenes/Game/Map/Tilesets/Ground.tres" type="TileSet" id=1]
 [ext_resource path="res://Scenes/Game/Map/Tilesets/Grounded.tres" type="TileSet" id=2]
@@ -18,12 +18,16 @@
 [ext_resource path="res://Assets/Sprites/icons32/farm_32_sprite_004.png" type="Texture" id=16]
 [ext_resource path="res://Scenes/Game/Map/Pickup/BrownMushroom.tscn" type="PackedScene" id=17]
 [ext_resource path="res://Scenes/Game/Map/Pickup/Apple.tscn" type="PackedScene" id=18]
+[ext_resource path="res://Resources/Abstract/Quantities/Nutrients/Calories100.tres" type="Resource" id=20]
+[ext_resource path="res://Scenes/Game/Map/Item/Food/Apple.tscn" type="PackedScene" id=21]
+[ext_resource path="res://Resources/Abstract/Quantities/Nutrients/HealingVitamin20.tres" type="Resource" id=22]
 
 [sub_resource type="Resource" id=1]
 script = ExtResource( 10 )
 machine_name = "CARROTS_QUANTITY"
 readable_name = "Carrots"
 icon = ExtResource( 12 )
+taxonomy = ""
 numerical_unit = 0
 quantity = 1.0
 
@@ -32,6 +36,7 @@ script = ExtResource( 10 )
 machine_name = "CARROTS_QUANTITY"
 readable_name = "Carrots"
 icon = ExtResource( 12 )
+taxonomy = ""
 numerical_unit = 0
 quantity = 1.0
 
@@ -40,6 +45,7 @@ script = ExtResource( 10 )
 machine_name = "CARROTS_QUANTITY"
 readable_name = "Carrots"
 icon = ExtResource( 12 )
+taxonomy = ""
 numerical_unit = 0
 quantity = 1.0
 
@@ -48,6 +54,7 @@ script = ExtResource( 10 )
 machine_name = "CARROTS_QUANTITY"
 readable_name = "Carrots"
 icon = ExtResource( 12 )
+taxonomy = ""
 numerical_unit = 0
 quantity = 1.0
 
@@ -56,6 +63,7 @@ script = ExtResource( 10 )
 machine_name = "NUTS_QUANTITY"
 readable_name = "Nuts"
 icon = ExtResource( 11 )
+taxonomy = ""
 numerical_unit = 0
 quantity = 1.0
 
@@ -64,6 +72,7 @@ script = ExtResource( 10 )
 machine_name = "NUTS_QUANTITY"
 readable_name = "Nuts"
 icon = ExtResource( 11 )
+taxonomy = ""
 numerical_unit = 0
 quantity = 1.0
 
@@ -72,6 +81,7 @@ script = ExtResource( 10 )
 machine_name = "NUTS_QUANTITY"
 readable_name = "Nuts"
 icon = ExtResource( 11 )
+taxonomy = ""
 numerical_unit = 0
 quantity = 1.0
 
@@ -80,6 +90,7 @@ script = ExtResource( 10 )
 machine_name = "NUTS_QUANTITY"
 readable_name = "Nuts"
 icon = ExtResource( 11 )
+taxonomy = ""
 numerical_unit = 0
 quantity = 1.0
 
@@ -88,6 +99,7 @@ script = ExtResource( 10 )
 machine_name = "NUTS_QUANTITY"
 readable_name = "Nuts"
 icon = ExtResource( 11 )
+taxonomy = ""
 numerical_unit = 0
 quantity = 1.0
 
@@ -96,6 +108,7 @@ script = ExtResource( 10 )
 machine_name = "NUTS_QUANTITY"
 readable_name = "Nuts"
 icon = ExtResource( 11 )
+taxonomy = ""
 numerical_unit = 0
 quantity = 1.0
 
@@ -104,6 +117,7 @@ script = ExtResource( 10 )
 machine_name = "NUTS_QUANTITY"
 readable_name = "Nuts"
 icon = ExtResource( 11 )
+taxonomy = ""
 numerical_unit = 0
 quantity = 1.0
 
@@ -112,6 +126,7 @@ script = ExtResource( 10 )
 machine_name = "NUTS_QUANTITY"
 readable_name = "Nuts"
 icon = ExtResource( 11 )
+taxonomy = ""
 numerical_unit = 0
 quantity = 1.0
 
@@ -120,6 +135,7 @@ script = ExtResource( 10 )
 machine_name = "APPLES_QUANTITY"
 readable_name = "Apples"
 icon = ExtResource( 14 )
+taxonomy = ""
 numerical_unit = 0
 quantity = 1.0
 
@@ -128,6 +144,7 @@ script = ExtResource( 10 )
 machine_name = "BROWN_MUSHROOMS_QUANTITY"
 readable_name = "Brown Mushrooms"
 icon = ExtResource( 16 )
+taxonomy = ""
 numerical_unit = 0
 quantity = 1.0
 
@@ -136,6 +153,7 @@ script = ExtResource( 10 )
 machine_name = "BROWN_MUSHROOMS_QUANTITY"
 readable_name = "Brown Mushrooms"
 icon = ExtResource( 16 )
+taxonomy = ""
 numerical_unit = 0
 quantity = 1.0
 
@@ -144,6 +162,7 @@ script = ExtResource( 10 )
 machine_name = "BROWN_MUSHROOMS_QUANTITY"
 readable_name = "Brown Mushrooms"
 icon = ExtResource( 16 )
+taxonomy = ""
 numerical_unit = 0
 quantity = 1.0
 
@@ -152,6 +171,7 @@ script = ExtResource( 10 )
 machine_name = "BROWN_MUSHROOMS_QUANTITY"
 readable_name = "Brown Mushrooms"
 icon = ExtResource( 16 )
+taxonomy = ""
 numerical_unit = 0
 quantity = 1.0
 
@@ -160,6 +180,7 @@ script = ExtResource( 10 )
 machine_name = "RED_MUSHROOMS_QUANTITY"
 readable_name = "Red Mushrooms"
 icon = ExtResource( 13 )
+taxonomy = ""
 numerical_unit = 0
 quantity = 1.0
 
@@ -168,11 +189,100 @@ script = ExtResource( 10 )
 machine_name = "BROWN_MUSHROOMS_QUANTITY"
 readable_name = "Brown Mushrooms"
 icon = ExtResource( 16 )
+taxonomy = ""
 numerical_unit = 0
 quantity = 1.0
 
+[sub_resource type="StreamTexture" id=20]
+flags = 4
+load_path = "res://.import/farm_32_sprite_011.png-ec8c69652b2b8edfb29ef23390291a5b.stex"
+
+[sub_resource type="GDScript" id=21]
+script/source = "extends AbstractUnit
+
+
+class_name AbstractContainer
+
+export(Array, Resource) var contents : Array setget set_contents
+
+var quantities : Array = []
+
+func _to_string():
+	var to_string = \"%s: [\" % machine_name
+	for content in contents:
+		to_string += str(content) + \",\"
+	return to_string + \"]\"
+
+func set_contents(value:Array):
+	if value == null:
+		return
+	contents = _return_valid_array(value)
+	
+func _return_valid_array(array:Array):
+	var final_array : Array = []
+	for unit in array:
+		if unit is AbstractUnit:
+			final_array.append(unit)
+	return final_array
+
+func _reset_quantities():
+	for quantity in quantities:
+		if quantity is AbstractQuantity:
+			quantity.quantity = 0
+
+func _update_quantities():
+	_reset_quantities()
+	for content in contents:
+		if content is AbstractUnit:
+			var quantity_to_add = 1
+			if content is AbstractQuantity:
+				quantity_to_add = content.quantity
+			var quantity : AbstractQuantity
+			quantity = find_quantity(content.machine_name)
+			if quantity:
+				quantity.quantity += quantity_to_add
+			else:
+				quantity = AbstractQuantity.new()
+				quantity.copy_from(content)
+				quantity.quantity = quantity_to_add
+				quantities.append(quantity)
+
+func add_content(value:AbstractUnit):
+	if value == null:
+		return
+	contents.push_back(value)
+	_update_quantities()
+	return contents
+
+func remove_content(value:AbstractUnit):
+	if value == null:
+		return
+	var index = contents.find(value)
+	if index >= 0:
+		contents.remove(index)
+		_update_quantities()
+
+func find_quantity(machine_name_query:String):
+	for quantity in quantities:
+		if quantity is AbstractQuantity and quantity.machine_name == machine_name_query:
+			return quantity
+
+func find_content(machine_name_query:String):
+	for content in contents:
+		if content is AbstractUnit and content.machine_name == machine_name_query:
+			return content
+"
+
+[sub_resource type="Resource" id=22]
+script = SubResource( 21 )
+machine_name = "APPLE"
+readable_name = "Apple"
+icon = SubResource( 20 )
+taxonomy = "FOOD"
+numerical_unit = 0
+contents = [ ExtResource( 22 ), ExtResource( 20 ) ]
+
 [node name="Map" type="Node2D"]
-position = Vector2( 0, -1 )
 script = ExtResource( 6 )
 
 [node name="Ground" type="Node2D" parent="."]
@@ -300,6 +410,10 @@ quantity = SubResource( 18 )
 [node name="BrownMushroom5" parent="Pickups/PickupMap" instance=ExtResource( 17 )]
 position = Vector2( 560, 305 )
 quantity = SubResource( 19 )
+
+[node name="Apple2" parent="Pickups/PickupMap" instance=ExtResource( 21 )]
+position = Vector2( 208, 496 )
+unit = SubResource( 22 )
 
 [node name="Interactives" type="Node2D" parent="." groups=[
 "INTERACTIVE",

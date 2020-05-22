@@ -7,7 +7,6 @@
 script = ExtResource( 1 )
 machine_name = "HEALING_VITAMIN_CONTAINER"
 readable_name = ""
+taxonomy = ""
 numerical_unit = 0
-slot_limit = 1
-quantity_limit = 100.0
 contents = [ ExtResource( 2 ) ]
