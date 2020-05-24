@@ -10,6 +10,9 @@ const HURT_ANIMATION = 'hurt'
 
 const CALORIES_CONTAINER = 'CALORIES_CONTAINER'
 const HEALTH_CONTAINER = 'HEALTH_CONTAINER'
+const EDIBLE = 'FOOD_ITEM'
+const DIGESTABLE = 'DIGESTABLE'
+
 
 const UP_VECTOR = Vector2(0,-1)
 const DOWN_VECTOR = Vector2(0,1)
@@ -29,6 +32,8 @@ var calories_container : AbstractContainer
 var health_container : AbstractContainer
 var map_node : Map2D
 var inventory : AbstractContainer
+var stomach : AbstractContainer
+var selected_item : AbstractUnit setget set_selected_item
 
 var last_move_direction : Vector2 = Vector2(0, 0)
 
@@ -36,6 +41,7 @@ func _ready():
 	animated_sprite_node.play(IDLE_ANIMATION)
 	animated_sprite_node.playing = true
 	inventory = AbstractContainer.new()
+	stomach = AbstractContainer.new()
 	# Sketch
 	var temp_node = self
 	while (not temp_node is Map2D):
@@ -53,6 +59,40 @@ func _process(_delta):
 	else:
 		animated_sprite_node.play(IDLE_ANIMATION)
 
+func _input(event):
+	_get_action(event)
+
+func _get_action(input):
+	if input.is_action_pressed("ui_accept"):
+		if is_instance_valid(selected_item):
+			return _act_on_inventory_item(selected_item)
+
+func _act_on_inventory_item(item:AbstractUnit):
+	if item == null:
+		return
+	match item.taxonomy:
+		EDIBLE:
+			_eat(item, inventory)
+			remove_from_inventory(item)
+
+func _eat(item:AbstractContainer, from_container:AbstractContainer):
+	if item == null:
+		return
+	var for_removal : Array = []
+	for content in item.contents:
+		if content is AbstractUnit:
+			print("content : ", content)
+			match content.taxonomy:
+				EDIBLE:
+					_eat(content, item)
+					from_container.remove_content(item)
+				DIGESTABLE:
+					stomach.add_content(content)
+					for_removal.append(content)
+					print("Stomach ", stomach)
+	for content in for_removal:
+		from_container.remove_content(content)
+
 func _get_move_vector(input):
 	if input.is_action_pressed("ui_up"):
 		return UP_VECTOR
@@ -67,6 +107,7 @@ func move_to(target_position:Vector2):
 	burn_calories(5)
 	animated_sprite_node.play(WALK_ANIMATION)
 	set_process(false)
+	set_process_input(false)
 	var sprite_frames = animated_sprite_node.get_sprite_frames()
 	var animate_speed = sprite_frames.get_frame_count(WALK_ANIMATION) / sprite_frames.get_animation_speed(WALK_ANIMATION)
 	var start_animation_position = animated_sprite_node.position + (position - target_position)
@@ -79,6 +120,7 @@ func move_to(target_position:Vector2):
 
 func bump_against():
 	set_process(false)
+	set_process_input(false)
 	animated_sprite_node.play(HURT_ANIMATION)
 	_wait_to_idle()
 
@@ -87,6 +129,7 @@ func _wait_to_idle():
 	animated_sprite_node.play(IDLE_ANIMATION)
 	_pickup_from_position(position)
 	set_process(true)
+	set_process_input(true)
 
 func _pickup_from_position(vector:Vector2):
 	var container = map_node.pickup_from_position(vector)
@@ -95,11 +138,27 @@ func _pickup_from_position(vector:Vector2):
 			emit_signal("picked_up", content)
 			print("picked_up ", content)
 			if content is AbstractUnit:
-				inventory.add_content(content)
-				var quantity = inventory.find_quantity(content.machine_name)
-				print("quantity_updated ", quantity)
-				emit_signal("quantity_updated", quantity)
-				
+				add_to_inventory(content)
+
+func add_to_inventory(content:AbstractUnit):
+	if content == null:
+		return
+	inventory.add_content(content)
+	if not is_instance_valid(selected_item):
+		selected_item = content
+	var quantity = inventory.find_quantity(content.machine_name)
+	print("quantity_updated ", quantity)
+	emit_signal("quantity_updated", quantity)
+
+func remove_from_inventory(content:AbstractUnit):
+	if content == null:
+		return
+	inventory.remove_content(content)
+	if selected_item == content:
+		selected_item = null
+	var quantity = inventory.find_quantity(content.machine_name)
+	print("quantity_updated ", quantity)
+	emit_signal("quantity_updated", quantity)
 
 func set_body_container(value:AbstractContainer):
 	if value == null:
@@ -113,6 +172,10 @@ func set_body_container(value:AbstractContainer):
 				CALORIES_CONTAINER:
 					calories_container = container
 
+func set_selected_item(value:AbstractUnit):
+	if inventory.contents.has(value):
+		selected_item = value
+	
 func burn_calories(value:int):
 	consume_calories(-value)
 

@@ -50,7 +50,7 @@ func _update_quantities():
 func add_content(value:AbstractUnit):
 	if value == null:
 		return
-	contents.push_back(value)
+	contents.append(value)
 	_update_quantities()
 	return contents
 

@@ -8,6 +8,6 @@ script = ExtResource( 1 )
 machine_name = "CALORIES"
 readable_name = "Calories"
 icon = ExtResource( 2 )
-taxonomy = ""
+taxonomy = "DIGESTABLE"
 numerical_unit = 0
 quantity = 100.0
