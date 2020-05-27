@@ -6,6 +6,7 @@ class_name Map2D
 const COLLIDABLE = 'COLLIDABLE'
 const INTERACTIVE = 'INTERACTIVE'
 const PICKUPS = 'PICKUPS'
+const PASSABLE = 'PASSABLE'
 
 enum CELL_TYPES { EMPTY = -1, NONE }
 

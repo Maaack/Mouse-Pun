@@ -60,11 +60,6 @@ _global_script_classes=[ {
 "path": "res://Resources/Abstract/OldAbstractContent.gd"
 }, {
 "base": "Node2D",
-"class": "Pickup",
-"language": "GDScript",
-"path": "res://Scenes/Game/Map/Pickup/Pickup.gd"
-}, {
-"base": "Node2D",
 "class": "Player",
 "language": "GDScript",
 "path": "res://Scenes/Game/Map/Player/Player.gd"
@@ -80,7 +75,6 @@ _global_script_class_icons={
 "Map2D": "",
 "OldAbstractContainer": "",
 "OldAbstractContent": "",
-"Pickup": "",
 "Player": ""
 }
 

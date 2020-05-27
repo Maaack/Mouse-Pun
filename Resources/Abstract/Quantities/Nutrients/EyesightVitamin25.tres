@@ -1,12 +1,13 @@
 [gd_resource type="Resource" load_steps=3 format=2]
 
 [ext_resource path="res://Resources/Abstract/AbstractQuantity.gd" type="Script" id=1]
-[ext_resource path="res://Assets/Sprites/icons32/farm_32_sprite_000.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Sprites/icons32/farm_32_sprite_016.png" type="Texture" id=2]
 
 [resource]
 script = ExtResource( 1 )
-machine_name = "CARROTS_QUANTITY"
-readable_name = "Carrots"
+machine_name = "EYESIGHT_VITAMIN"
+readable_name = "Eyesight Vitamin"
 icon = ExtResource( 2 )
+taxonomy = "DIGESTABLE"
 numerical_unit = 0
-quantity = 1.0
+quantity = 25.0

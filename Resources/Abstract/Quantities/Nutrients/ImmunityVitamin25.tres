@@ -1,13 +1,13 @@
 [gd_resource type="Resource" load_steps=3 format=2]
 
 [ext_resource path="res://Resources/Abstract/AbstractQuantity.gd" type="Script" id=1]
-[ext_resource path="res://Assets/Sprites/icons2/farm_sprite_016.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Sprites/icons32/farm_32_sprite_027.png" type="Texture" id=2]
 
 [resource]
 script = ExtResource( 1 )
-machine_name = "EYESIGHT_VITAMIN_QUANTITY"
-readable_name = "Eyesight Vitamin"
+machine_name = "IMMUNITY_VITAMIN"
+readable_name = "Immunity Vitamin"
 icon = ExtResource( 2 )
-taxonomy = ""
+taxonomy = "DIGESTABLE"
 numerical_unit = 0
-quantity = 0.0
+quantity = 25.0

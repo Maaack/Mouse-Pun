@@ -8,16 +8,19 @@ const WALK_ANIMATION = 'walk'
 const RUN_ANIMATION = 'run'
 const HURT_ANIMATION = 'hurt'
 
-const CALORIES_QUANTITY = 'CALORIES_QUANTITY'
-const HEALTH_QUANTITY = 'HEALTH_QUANTITY'
 const EDIBLE = 'FOOD_ITEM'
 const DIGESTABLE = 'DIGESTABLE'
 
+const EYESIGHT_VITAMIN = 'EYESIGHT_VITAMIN'
 
 const UP_VECTOR = Vector2(0,-1)
 const DOWN_VECTOR = Vector2(0,1)
 const LEFT_VECTOR = Vector2(-1,0)
 const RIGHT_VECTOR = Vector2(1,0)
+
+const CALORIES_PER_MOVE = 2
+const DIGESTED_UNITS_PER_TURN = 5
+const EYESIGHT_VITAMIN_STEP = 100
 
 signal picked_up
 signal quantity_updated
@@ -51,6 +54,7 @@ func _ready():
 	emit_signal("body_updated", body)
 	inventory = AbstractContainer.new()
 	stomach = AbstractSampler.new()
+	stomach.add_content(calories_quantity_resource.duplicate())
 	# Sketch
 	var temp_node = self
 	while (not temp_node is Map2D):
@@ -113,7 +117,7 @@ func _get_move_vector(input):
 		return RIGHT_VECTOR
 
 func move_to(target_position:Vector2):
-	burn_calories(5)
+	burn_calories(CALORIES_PER_MOVE)
 	animated_sprite_node.play(WALK_ANIMATION)
 	set_process(false)
 	set_process_input(false)
@@ -186,7 +190,7 @@ func add_calories(value:int):
 		calories_quantity.quantity += value
 
 func _digest_stomach_contents():
-	var sample : AbstractContainer = stomach.sample(10)
+	var sample : AbstractContainer = stomach.sample(DIGESTED_UNITS_PER_TURN)
 	if sample == null:
 		print("Hungry")
 		return
@@ -199,8 +203,15 @@ func _reveal_neighboring_tiles():
 		for y in range(-vision_range, 2*vision_range):
 			var tile_position = grid_node.world_to_map(position)
 			var offset_tile_position : Vector2 = tile_position + Vector2(x,y)
-			print("reveal tile " , offset_tile_position)
 			emit_signal("reveal_tile", offset_tile_position)
 
 func _get_vision_range():
-	return 1
+	var vision_range : int = 1
+	var quantity : AbstractQuantity = body.find_content(EYESIGHT_VITAMIN)
+	if is_instance_valid(quantity):
+		var spendable : int = ceil(quantity.quantity / EYESIGHT_VITAMIN_STEP)
+		if spendable > quantity.quantity:
+			spendable = quantity.quantity
+		quantity.quantity -= spendable
+		vision_range += spendable
+	return vision_range

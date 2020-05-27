@@ -1,7 +1,7 @@
 [gd_resource type="Resource" load_steps=3 format=2]
 
 [ext_resource path="res://Resources/Abstract/AbstractQuantity.gd" type="Script" id=1]
-[ext_resource path="res://Assets/Sprites/rpgItems/sprite_03.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Sprites/icons32/farm_32_sprite_022.png" type="Texture" id=2]
 
 [resource]
 script = ExtResource( 1 )
