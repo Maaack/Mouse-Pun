@@ -22,6 +22,7 @@ const RIGHT_VECTOR = Vector2(1,0)
 signal picked_up
 signal quantity_updated
 signal body_updated
+signal reveal_tile
 
 onready var animated_sprite_node = $AnimatedSprite
 onready var tween_node = $Tween
@@ -135,6 +136,7 @@ func bump_against():
 func start_turn():
 	_pickup_from_position(position)
 	_digest_stomach_contents()
+	_reveal_neighboring_tiles()
 	set_process(true)
 	set_process_input(true)
 
@@ -190,3 +192,15 @@ func _digest_stomach_contents():
 		return
 	body.add_contents(sample.contents)
 	emit_signal("body_updated", body)
+
+func _reveal_neighboring_tiles():
+	var vision_range = _get_vision_range()
+	for x in range(-vision_range, 2*vision_range):
+		for y in range(-vision_range, 2*vision_range):
+			var tile_position = grid_node.world_to_map(position)
+			var offset_tile_position : Vector2 = tile_position + Vector2(x,y)
+			print("reveal tile " , offset_tile_position)
+			emit_signal("reveal_tile", offset_tile_position)
+
+func _get_vision_range():
+	return 1
