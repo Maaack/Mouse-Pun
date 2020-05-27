@@ -4,11 +4,21 @@ extends Control
 onready var body_information_node = $MarginContainer/Control/TopLeft/BodyInformation
 onready var quickslots_node = $MarginContainer/Control/CenterBottom/Quickslots
 
-func show_containers(container:AbstractContainer):
+func update_body_container(container:AbstractContainer):
 	if container == null:
 		return
-	for inner_container in container.contents:
-		body_information_node.show_container(inner_container)
+	for content in container.contents:
+		if content is AbstractContainer:
+			body_information_node.add_container(content)
+		elif content is AbstractQuantity:
+			body_information_node.add_quantity(content)
+
+func add_container_to_body_information(container:AbstractContainer):
+	body_information_node.add_container(container)
+	
+func add_quantity_to_body_information(quantity:AbstractQuantity):
+	body_information_node.add_quantity(quantity)
+	
 
 func add_quantity_to_quickslot(quantity:AbstractQuantity):
 	quickslots_node.add_quantity(quantity)

@@ -8,8 +8,8 @@ const WALK_ANIMATION = 'walk'
 const RUN_ANIMATION = 'run'
 const HURT_ANIMATION = 'hurt'
 
-const CALORIES_CONTAINER = 'CALORIES_CONTAINER'
-const HEALTH_CONTAINER = 'HEALTH_CONTAINER'
+const CALORIES_QUANTITY = 'CALORIES_QUANTITY'
+const HEALTH_QUANTITY = 'HEALTH_QUANTITY'
 const EDIBLE = 'FOOD_ITEM'
 const DIGESTABLE = 'DIGESTABLE'
 
@@ -21,6 +21,7 @@ const RIGHT_VECTOR = Vector2(1,0)
 
 signal picked_up
 signal quantity_updated
+signal body_updated
 
 onready var animated_sprite_node = $AnimatedSprite
 onready var tween_node = $Tween
@@ -28,11 +29,15 @@ onready var grid_node = get_parent()
 
 export(Resource) var body_container setget set_body_container
 
-var calories_container : AbstractContainer
-var health_container : AbstractContainer
+var body_container_resource = preload("res://Resources/Abstract/Containers/BodyContainer.tres")
+var health_quantity_resource = preload("res://Resources/Abstract/Quantities/HealthQuantity.tres")
+var calories_quantity_resource = preload("res://Resources/Abstract/Quantities/Nutrients/Calories100.tres")
+var calories_quantity : AbstractQuantity
+var health_quantity : AbstractQuantity
 var map_node : Map2D
+var body : AbstractContainer
 var inventory : AbstractContainer
-var stomach : AbstractContainer
+var stomach : AbstractSampler
 var selected_item : AbstractUnit setget set_selected_item
 
 var last_move_direction : Vector2 = Vector2(0, 0)
@@ -40,8 +45,14 @@ var last_move_direction : Vector2 = Vector2(0, 0)
 func _ready():
 	animated_sprite_node.play(IDLE_ANIMATION)
 	animated_sprite_node.playing = true
+	body = AbstractContainer.new()
+	health_quantity = health_quantity_resource.duplicate()
+	calories_quantity = calories_quantity_resource.duplicate()
+	body.add_content(health_quantity)
+	body.add_content(calories_quantity)
+	emit_signal("body_updated", body)
 	inventory = AbstractContainer.new()
-	stomach = AbstractContainer.new()
+	stomach = AbstractSampler.new()
 	# Sketch
 	var temp_node = self
 	while (not temp_node is Map2D):
@@ -124,12 +135,16 @@ func bump_against():
 	animated_sprite_node.play(HURT_ANIMATION)
 	_wait_to_idle()
 
+func start_turn():
+	_pickup_from_position(position)
+	_digest_stomach_contents()
+	set_process(true)
+	set_process_input(true)
+
 func _wait_to_idle():
 	yield(animated_sprite_node, "animation_finished")
 	animated_sprite_node.play(IDLE_ANIMATION)
-	_pickup_from_position(position)
-	set_process(true)
-	set_process_input(true)
+	start_turn()
 
 func _pickup_from_position(vector:Vector2):
 	var container = map_node.pickup_from_position(vector)
@@ -147,7 +162,6 @@ func add_to_inventory(content:AbstractUnit):
 	if not is_instance_valid(selected_item):
 		selected_item = content
 	var quantity = inventory.find_quantity(content.machine_name)
-	print("quantity_updated ", quantity)
 	emit_signal("quantity_updated", quantity)
 
 func remove_from_inventory(content:AbstractUnit):
@@ -157,7 +171,6 @@ func remove_from_inventory(content:AbstractUnit):
 	if selected_item == content:
 		selected_item = null
 	var quantity = inventory.find_quantity(content.machine_name)
-	print("quantity_updated ", quantity)
 	emit_signal("quantity_updated", quantity)
 
 func set_body_container(value:AbstractContainer):
@@ -167,21 +180,28 @@ func set_body_container(value:AbstractContainer):
 	for container in value.contents:
 		if container is AbstractContainer:
 			match container.machine_name:
-				HEALTH_CONTAINER:
-					health_container = container
-				CALORIES_CONTAINER:
-					calories_container = container
+				health_quantity:
+					health_quantity = container
+				calories_quantity:
+					calories_quantity = container
 
 func set_selected_item(value:AbstractUnit):
 	if inventory.contents.has(value):
 		selected_item = value
 	
 func burn_calories(value:int):
-	consume_calories(-value)
+	add_calories(-value)
 
-func consume_calories(value:int):
-	if calories_container == null:
+func add_calories(value:int):
+	if calories_quantity == null:
 		return
-	var calories = calories_container.contents.front()
-	if calories is AbstractQuantity:
-		calories.quantity += value
+	if calories_quantity is AbstractQuantity:
+		calories_quantity.quantity += value
+
+func _digest_stomach_contents():
+	var sample : AbstractContainer = stomach.sample(10)
+	if sample == null:
+		print("Hungry")
+		return
+	body.add_contents(sample.contents)
+	emit_signal("body_updated", body)
