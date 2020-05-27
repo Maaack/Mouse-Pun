@@ -27,9 +27,6 @@ onready var animated_sprite_node = $AnimatedSprite
 onready var tween_node = $Tween
 onready var grid_node = get_parent()
 
-export(Resource) var body_container setget set_body_container
-
-var body_container_resource = preload("res://Resources/Abstract/Containers/BodyContainer.tres")
 var health_quantity_resource = preload("res://Resources/Abstract/Quantities/HealthQuantity.tres")
 var calories_quantity_resource = preload("res://Resources/Abstract/Quantities/Nutrients/Calories100.tres")
 var calories_quantity : AbstractQuantity
@@ -172,18 +169,6 @@ func remove_from_inventory(content:AbstractUnit):
 		selected_item = null
 	var quantity = inventory.find_quantity(content.machine_name)
 	emit_signal("quantity_updated", quantity)
-
-func set_body_container(value:AbstractContainer):
-	if value == null:
-		return
-	body_container = value
-	for container in value.contents:
-		if container is AbstractContainer:
-			match container.machine_name:
-				health_quantity:
-					health_quantity = container
-				calories_quantity:
-					calories_quantity = container
 
 func set_selected_item(value:AbstractUnit):
 	if inventory.contents.has(value):
