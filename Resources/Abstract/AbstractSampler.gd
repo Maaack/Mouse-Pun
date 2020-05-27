@@ -12,12 +12,13 @@ func sample(value:int):
 	_update_sampleable_quantities()
 	for i in range(value):
 		var next_quantity = _get_next_largest_sample_quantity()
-		if next_quantity == null or next_quantity.quantity < 1:
+		if next_quantity == null:
 			break
 		var content = find_content(next_quantity.machine_name)
-		if content:
+		if content and content is AbstractQuantity:
 			var next_unit = _get_unit_of_content(content)
-			
+			if next_unit.quantity < 1:
+				continue
 			sample.add_content(next_unit)
 			_sub_unit_from_content(next_unit)
 			next_quantity.quantity *= sample_modifier
