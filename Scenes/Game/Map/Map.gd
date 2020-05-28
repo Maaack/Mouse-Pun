@@ -16,6 +16,7 @@ onready var fog_of_war_grid_node = $FogOfWar/TileMap
 
 func _ready():
 	player_node.connect("reveal_tile", self, "_on_Player_reveal_tile")
+	fog_of_war_grid_node.visible = true
 
 func is_cellv_type(cell_vector:Vector2, type:String) -> bool:
 	for child in get_children():

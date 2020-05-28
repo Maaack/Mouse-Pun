@@ -54,7 +54,6 @@ func _ready():
 	emit_signal("body_updated", body)
 	inventory = AbstractContainer.new()
 	stomach = AbstractSampler.new()
-	stomach.add_content(calories_quantity_resource.duplicate())
 	# Sketch
 	var temp_node = self
 	while (not temp_node is Map2D):
@@ -199,8 +198,8 @@ func _digest_stomach_contents():
 
 func _reveal_neighboring_tiles():
 	var vision_range = _get_vision_range()
-	for x in range(-vision_range, 2*vision_range):
-		for y in range(-vision_range, 2*vision_range):
+	for x in range(-vision_range, vision_range + 1):
+		for y in range(-vision_range, vision_range + 1):
 			var tile_position = grid_node.world_to_map(position)
 			var offset_tile_position : Vector2 = tile_position + Vector2(x,y)
 			emit_signal("reveal_tile", offset_tile_position)

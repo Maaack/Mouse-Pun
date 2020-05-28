@@ -10,4 +10,4 @@ readable_name = "Eyesight Vitamin"
 icon = ExtResource( 2 )
 taxonomy = "DIGESTABLE"
 numerical_unit = 0
-quantity = 25.0
+quantity = 100.0
