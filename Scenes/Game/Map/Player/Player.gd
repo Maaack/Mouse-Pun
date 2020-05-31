@@ -21,12 +21,14 @@ const RIGHT_VECTOR = Vector2(1,0)
 const CALORIES_PER_MOVE = 2
 const DIGESTED_UNITS_PER_TURN = 5
 const EYESIGHT_VITAMIN_STEP = 100
+const KNOCKBACK_TIME = 0.2
 
 signal picked_up
 signal quantity_updated
 signal body_updated
 signal reveal_tile
 signal turn_taken
+signal inventory_slot_selected
 
 onready var animated_sprite_node = $AnimatedSprite
 onready var tween_node = $Tween
@@ -42,6 +44,7 @@ var inventory : AbstractContainer
 var stomach : AbstractSampler
 var selected_item : AbstractUnit setget set_selected_item
 
+var max_health : int = 100
 var last_move_direction : Vector2 = Vector2(0, 0)
 
 func _ready():
@@ -50,6 +53,7 @@ func _ready():
 	body = AbstractContainer.new()
 	health_quantity = health_quantity_resource.duplicate()
 	calories_quantity = calories_quantity_resource.duplicate()
+	max_health = health_quantity.quantity
 	body.add_content(health_quantity)
 	body.add_content(calories_quantity)
 	emit_signal("body_updated", body)
@@ -67,20 +71,15 @@ func _process(_delta):
 func _input(event):
 	_get_action(event)
 
-func _process_move_input():
-	var move_vector = _get_move_vector(Input)
-	if move_vector:
-		var target_position = grid_node.try_move(self, move_vector)
-		if target_position:
-			move_to(target_position)
-		else:
-			bump_against()
-		end_turn()
-
 func _get_action(input):
 	if input.is_action_pressed("ui_accept"):
 		if is_instance_valid(selected_item):
 			return _act_on_inventory_item(selected_item)
+	if input.is_action_pressed("ui_select"):
+		return wait()
+	if input.is_action_pressed("ui_slot_1"):
+		emit_signal("inventory_slot_selected", 1)
+		
 
 func _act_on_inventory_item(item:AbstractUnit):
 	if item == null:
@@ -108,6 +107,16 @@ func _eat(item:AbstractContainer, from_container:AbstractContainer):
 	for content in for_removal:
 		from_container.remove_content(content)
 
+func _process_move_input():
+	var move_vector = _get_move_vector(Input)
+	if move_vector:
+		var target_position = grid_node.try_move(self, move_vector)
+		if target_position:
+			move_to(target_position)
+		else:
+			bump_against()
+		end_turn()
+
 func _get_move_vector(input):
 	if input.is_action_pressed("ui_up"):
 		return UP_VECTOR
@@ -132,6 +141,24 @@ func move_to(target_position:Vector2):
 	animated_sprite_node.position = start_animation_position
 	tween_node.start()
 
+func roll_to(target_position:Vector2):
+	set_process(false)
+	set_process_input(false)
+	var start_animation_position = animated_sprite_node.position + (position - target_position)
+	var end_animation_position = animated_sprite_node.position
+	var animate_speed = KNOCKBACK_TIME
+	tween_node.interpolate_property(animated_sprite_node, "position", start_animation_position, end_animation_position, animate_speed)
+	position = target_position
+	animated_sprite_node.position = start_animation_position
+	tween_node.start()
+
+func knock_back(direction:Vector2):
+	var target_position = grid_node.try_move(self, direction)
+	if target_position:
+		roll_to(target_position)
+	else:
+		bump_against()
+
 func bump_against():
 	animated_sprite_node.play(HURT_ANIMATION)
 
@@ -155,6 +182,22 @@ func _wait_to_idle():
 
 func wait():
 	end_turn()
+
+func update_health(value:int):
+	if value > 0 and health_quantity.quantity < max_health:
+		var max_healing = max_health - health_quantity.quantity
+		value = min(value, max_healing)
+	elif value < 0 and health_quantity.quantity > 0:
+		value = max(value, -health_quantity.quantity)
+	if value == 0:
+		return
+	return health_quantity.add_quantity(value)
+
+func heal(value:int):
+	return update_health(value)
+
+func damage(value:int):
+	return update_health(-value)
 
 func end_turn():
 	set_process(false)

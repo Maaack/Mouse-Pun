@@ -20,7 +20,7 @@ onready var animated_sprite_node = $AnimatedSprite
 onready var tween_node = $Tween
 onready var grid_node = get_parent()
 
-export(Vector2) var move_direction = UP_VECTOR
+export(Vector2) var move_direction : Vector2 = UP_VECTOR
 
 func start_turn():
 	_wait_to_idle()
@@ -33,7 +33,6 @@ func end_turn():
 func try_to_move():
 	_face_direction(move_direction)
 	var target_position = grid_node.try_move(self, move_direction)
-	print("tried to move and ", target_position)
 	if target_position:
 		move_to(target_position)
 	else:
