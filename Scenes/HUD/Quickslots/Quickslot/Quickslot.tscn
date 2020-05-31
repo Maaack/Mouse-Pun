@@ -18,6 +18,10 @@ __meta__ = {
 selected = true
 
 [node name="InventorySlot" parent="." instance=ExtResource( 1 )]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = 0.0
+margin_bottom = 0.0
 
 [node name="Selected" type="NinePatchRect" parent="."]
 visible = false
@@ -43,3 +47,6 @@ custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 custom_constants/shadow_as_outline = 1
 text = "0"
 align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}

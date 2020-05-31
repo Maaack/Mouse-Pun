@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://Scenes/Game/Map/Player/SpriteFrames.tres" type="SpriteFrames" id=1]
+[ext_resource path="res://Scenes/Game/Map/Player/OldCatSpriteFrames.tres" type="SpriteFrames" id=1]
 [ext_resource path="res://Scenes/Game/Map/Player/Player.gd" type="Script" id=47]
 
 [node name="Player" type="Node2D"]

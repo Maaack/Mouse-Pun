@@ -13,7 +13,7 @@ func _ready():
 		temp_node = temp_node.get_parent()
 	map_node = temp_node
 
-func try_move(mover:Player, direction:Vector2):
+func try_move(mover:Node2D, direction:Vector2):
 	if not is_instance_valid(mover):
 		return
 	var start_cell = world_to_map(mover.position)

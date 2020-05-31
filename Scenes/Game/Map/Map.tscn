@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://Scenes/Game/Map/Tilesets/Ground.tres" type="TileSet" id=1]
 [ext_resource path="res://Scenes/Game/Map/Tilesets/Grounded.tres" type="TileSet" id=2]
@@ -12,12 +12,16 @@
 [ext_resource path="res://Scenes/Game/Map/Item/Food/Carrot.tscn" type="PackedScene" id=10]
 [ext_resource path="res://Scenes/Game/Map/Item/Food/Broccoli.tscn" type="PackedScene" id=11]
 [ext_resource path="res://Scenes/Game/Map/Item/Food/Pepper.tscn" type="PackedScene" id=12]
+[ext_resource path="res://Scenes/Game/Map/Characters/Cat/Cat.tscn" type="PackedScene" id=13]
 [ext_resource path="res://Scenes/Game/Map/Item/Food/Apple.tscn" type="PackedScene" id=21]
 
 [node name="Map" type="Node2D"]
 script = ExtResource( 6 )
 
 [node name="Ground" type="Node2D" parent="."]
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="Bottom" type="TileMap" parent="Ground"]
 tile_set = ExtResource( 1 )
@@ -37,6 +41,9 @@ __meta__ = {
 [node name="Collidable" type="Node2D" parent="." groups=[
 "COLLIDABLE",
 ]]
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="Bottom" type="TileMap" parent="Collidable"]
 position = Vector2( 0, -1 )
@@ -58,6 +65,9 @@ __meta__ = {
 [node name="Pickups" type="Node2D" parent="." groups=[
 "PICKUPS",
 ]]
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="PickupMap" parent="Pickups" instance=ExtResource( 7 )]
 
@@ -151,6 +161,9 @@ position = Vector2( 784, 48 )
 [node name="Interactives" type="Node2D" parent="." groups=[
 "INTERACTIVE",
 ]]
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="Interactives" type="TileMap" parent="Interactives"]
 position = Vector2( 0, -1 )
@@ -161,9 +174,18 @@ script = ExtResource( 4 )
 [node name="Player" parent="Interactives/Interactives" instance=ExtResource( 3 )]
 position = Vector2( 272, 464 )
 
+[node name="Cat2" parent="Interactives/Interactives" instance=ExtResource( 13 )]
+position = Vector2( 528, 561 )
+
+[node name="Cat3" parent="Interactives/Interactives" instance=ExtResource( 13 )]
+position = Vector2( 592, 113 )
+
 [node name="Passable" type="Node2D" parent="." groups=[
 "PASSABLE",
 ]]
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="TileMap" type="TileMap" parent="Passable"]
 tile_set = ExtResource( 2 )
@@ -178,6 +200,10 @@ format = 1
 tile_data = PoolIntArray( -458749, 15, 0, -393211, 16, 0, -327679, 15, 0, -327677, 16, 0, 327703, 14, 0, 458776, 14, 0, 524297, 16, 0, 720898, 16, 0, 786441, 16, 0, 851969, 16, 0, 851979, 16, 0, 917506, 16, 0, 917513, 16, 0, 983040, 15, 0, 983042, 16, 0, 1048579, 16, 0, 1048581, 16, 0, 1048586, 16, 0, 1048588, 16, 0, 1114113, 15, 0, 1114120, 15, 0, 1179650, 15, 0, 1179651, 15, 0, 1179658, 15, 0, 1179660, 15, 0, 1245188, 15, 0, 1245189, 15, 0, 1245193, 15, 0 )
 
 [node name="FogOfWar" type="Node2D" parent="."]
+__meta__ = {
+"_edit_group_": true,
+"_edit_lock_": true
+}
 
 [node name="TileMap" type="TileMap" parent="FogOfWar"]
 visible = false

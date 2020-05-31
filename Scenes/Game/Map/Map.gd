@@ -13,10 +13,33 @@ enum CELL_TYPES { EMPTY = -1, NONE }
 onready var pickups_grid_node = $Pickups/PickupMap
 onready var player_node = $Interactives/Interactives/Player
 onready var fog_of_war_grid_node = $FogOfWar/TileMap
+onready var interactive_grid_node = $Interactives/Interactives
 
-func _ready():
-	player_node.connect("reveal_tile", self, "_on_Player_reveal_tile")
+var character_turns : Array = []
+var current_character : Node2D
+
+func start_game():
 	fog_of_war_grid_node.visible = true
+	player_node.connect("reveal_tile", self, "_on_Player_reveal_tile")
+	_start_next_characters_turn()
+
+func _reset_character_turns():
+	character_turns = []
+	for node in interactive_grid_node.get_children():
+		character_turns.append(node)
+
+func _start_next_characters_turn():
+	if character_turns.size() < 1:
+		_reset_character_turns()
+	if character_turns.size() < 1:
+		return
+	current_character = character_turns.pop_front()
+	current_character.connect("turn_taken", self, "_on_Character_turn_taken")
+	current_character.start_turn()
+
+func _on_Character_turn_taken(node:Node2D):
+	_start_next_characters_turn()
+
 
 func is_cellv_type(cell_vector:Vector2, type:String) -> bool:
 	for child in get_children():

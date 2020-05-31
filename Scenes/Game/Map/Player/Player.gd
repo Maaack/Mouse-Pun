@@ -1,7 +1,7 @@
 extends Node2D
 
 
-class_name Player
+class_name PlayerCharacter
 
 const IDLE_ANIMATION = 'idle'
 const WALK_ANIMATION = 'walk'
@@ -26,6 +26,7 @@ signal picked_up
 signal quantity_updated
 signal body_updated
 signal reveal_tile
+signal turn_taken
 
 onready var animated_sprite_node = $AnimatedSprite
 onready var tween_node = $Tween
@@ -61,6 +62,12 @@ func _ready():
 	map_node = temp_node
 
 func _process(_delta):
+	_process_move_input()
+
+func _input(event):
+	_get_action(event)
+
+func _process_move_input():
 	var move_vector = _get_move_vector(Input)
 	if move_vector:
 		var target_position = grid_node.try_move(self, move_vector)
@@ -68,11 +75,7 @@ func _process(_delta):
 			move_to(target_position)
 		else:
 			bump_against()
-	else:
-		animated_sprite_node.play(IDLE_ANIMATION)
-
-func _input(event):
-	_get_action(event)
+		end_turn()
 
 func _get_action(input):
 	if input.is_action_pressed("ui_accept"):
@@ -128,15 +131,14 @@ func move_to(target_position:Vector2):
 	position = target_position
 	animated_sprite_node.position = start_animation_position
 	tween_node.start()
-	_wait_to_idle()
 
 func bump_against():
-	set_process(false)
-	set_process_input(false)
 	animated_sprite_node.play(HURT_ANIMATION)
-	_wait_to_idle()
 
 func start_turn():
+	var result = _wait_to_idle()
+	if result is GDScriptFunctionState:
+		yield(result, "completed")
 	_pickup_from_position(position)
 	_digest_stomach_contents()
 	_reveal_neighboring_tiles()
@@ -144,9 +146,20 @@ func start_turn():
 	set_process_input(true)
 
 func _wait_to_idle():
-	yield(animated_sprite_node, "animation_finished")
+	if animated_sprite_node.is_playing():
+		yield(animated_sprite_node,"animation_finished")
+	if tween_node.is_active():
+		yield(tween_node, "tween_all_completed")
 	animated_sprite_node.play(IDLE_ANIMATION)
-	start_turn()
+	return
+
+func wait():
+	end_turn()
+
+func end_turn():
+	set_process(false)
+	set_process_input(false)
+	emit_signal("turn_taken", self)
 
 func _pickup_from_position(vector:Vector2):
 	var container = map_node.pickup_from_position(vector)
@@ -171,7 +184,7 @@ func remove_from_inventory(content:AbstractUnit):
 		return
 	inventory.remove_content(content)
 	if selected_item == content:
-		selected_item = null
+		selected_item = inventory.find_content(content.machine_name)
 	var quantity = inventory.find_quantity(content.machine_name)
 	emit_signal("quantity_updated", quantity)
 
