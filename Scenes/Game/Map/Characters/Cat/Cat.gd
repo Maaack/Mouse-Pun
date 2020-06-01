@@ -2,7 +2,7 @@ extends Character
 
 
 export(int) var attack_damage = 10
-export(int) var speed = 7
+export(int) var speed = 6
 
 func start_turn():
 	var result = wait_to_idle()

@@ -22,8 +22,9 @@ var interval_length : int = 1024
 var current_interval : int = 0
 
 func start_game():
-	fog_of_war_grid_node.visible = true
+	# fog_of_war_grid_node.visible = true
 	player_node.connect("reveal_tile", self, "_on_Player_reveal_tile")
+	player_node.connect("speed_updated", self, "_on_Player_speed_updated")
 	_start_next_characters_turn()
 
 func _reset_character_turns():
@@ -55,7 +56,8 @@ func _start_next_characters_turn():
 			if current_interval_array.size() == 0:
 				return
 	current_character = current_interval_array.pop_front()
-	current_character.connect("turn_taken", self, "_on_Character_turn_taken")
+	if not current_character.is_connected("turn_taken", self, "_on_Character_turn_taken"):
+		current_character.connect("turn_taken", self, "_on_Character_turn_taken")
 	if current_character.has_method("set_turn_time"):
 		var relative_turn_time = player_node.turn_time / pow(2, current_character.get_speed() - player_node.get_speed())
 		current_character.set_turn_time(relative_turn_time)
@@ -67,6 +69,15 @@ func _get_next_interval_array():
 			current_interval = i
 			return intervals_dict[i]
 	return []
+
+func _on_Player_speed_updated():
+	var past_interval = current_interval
+	_reset_character_turns()
+	current_interval = past_interval
+	current_interval_array = intervals_dict[current_interval]
+	var front_array : Node2D
+	while(current_interval_array.size() > 0 and front_array != current_character):
+		current_character = current_interval_array.pop_front()
 
 func _on_Character_turn_taken(node:Node2D):
 	_start_next_characters_turn()

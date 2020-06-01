@@ -11,16 +11,11 @@ const HURT_ANIMATION = 'hurt'
 const EDIBLE = 'FOOD_ITEM'
 const DIGESTABLE = 'DIGESTABLE'
 
-const EYESIGHT_VITAMIN = 'EYESIGHT_VITAMIN'
-
 const UP_VECTOR = Vector2(0,-1)
 const DOWN_VECTOR = Vector2(0,1)
 const LEFT_VECTOR = Vector2(-1,0)
 const RIGHT_VECTOR = Vector2(1,0)
 
-const CALORIES_PER_MOVE = 2
-const DIGESTED_UNITS_PER_TURN = 5
-const EYESIGHT_VITAMIN_STEP = 100
 const KNOCKBACK_TIME = 0.2
 
 signal picked_up
@@ -29,12 +24,14 @@ signal body_updated
 signal reveal_tile
 signal turn_taken
 signal inventory_slot_selected
+signal stats_updated
+signal speed_updated
 
 onready var animated_sprite_node = $AnimatedSprite
 onready var tween_node = $Tween
 onready var grid_node = get_parent()
 
-export(int) var speed : int = 4
+export(int) var speed : int = 3
 export(float) var turn_time : float = 1.0
 
 var health_quantity_resource = preload("res://Resources/Abstract/Quantities/HealthQuantity.tres")
@@ -50,6 +47,7 @@ var animated_sprite_node_position : Vector2
 
 var max_health : int = 100
 var last_move_direction : Vector2 = Vector2(0, 0)
+var stat_manager = preload("res://Scenes/Game/Map/Player/StatManager.gd").new()
 
 func _ready():
 	animated_sprite_node.play(IDLE_ANIMATION)
@@ -133,7 +131,8 @@ func _get_move_vector(input):
 		return RIGHT_VECTOR
 
 func move_to(target_position:Vector2):
-	burn_calories(CALORIES_PER_MOVE)
+	var speed = get_speed()
+	burn_calories(speed)
 	set_process(false)
 	set_process_input(false)
 	var sprite_frames = animated_sprite_node.get_sprite_frames()
@@ -171,6 +170,7 @@ func start_turn():
 	var result = wait_to_idle()
 	if result is GDScriptFunctionState:
 		yield(result, "completed")
+	calculate_stats()
 	_pickup_from_position(position)
 	_digest_stomach_contents()
 	_reveal_neighboring_tiles()
@@ -253,7 +253,8 @@ func add_calories(value:int):
 		calories_quantity.quantity += value
 
 func _digest_stomach_contents():
-	var sample : AbstractContainer = stomach.sample(DIGESTED_UNITS_PER_TURN)
+	var metabolism : int = int(stat_manager.metabolism_stat.quantity)
+	var sample : AbstractContainer = stomach.sample(metabolism)
 	if sample == null:
 		print("Hungry")
 		return
@@ -269,18 +270,15 @@ func _reveal_neighboring_tiles():
 			emit_signal("reveal_tile", offset_tile_position)
 
 func _get_vision_range():
-	var vision_range : int = 1
-	var quantity : AbstractQuantity = body.find_content(EYESIGHT_VITAMIN)
-	if is_instance_valid(quantity):
-		var spendable : int = ceil(quantity.quantity / EYESIGHT_VITAMIN_STEP)
-		if spendable > quantity.quantity:
-			spendable = quantity.quantity
-		quantity.quantity -= spendable
-		vision_range += spendable
-	return vision_range
+	return int(stat_manager.vision_stat.quantity)
 
 func get_speed():
-	return speed
+	return int(stat_manager.speed_stat.quantity)
 
-func _on_AnimatedSprite_animation_finished():
-	animated_sprite_node.stop()
+func calculate_stats():
+	stat_manager.update_player_stats(body)
+	if stat_manager.speed_stat_diff != 0:
+		emit_signal("speed_updated")
+	if stat_manager.is_updated():
+		emit_signal("stats_updated", stat_manager.container)
+	

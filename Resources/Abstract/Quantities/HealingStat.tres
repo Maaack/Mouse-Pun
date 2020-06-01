@@ -1,13 +1,13 @@
 [gd_resource type="Resource" load_steps=3 format=2]
 
 [ext_resource path="res://Resources/Abstract/AbstractQuantity.gd" type="Script" id=1]
-[ext_resource path="res://Assets/Sprites/icons_1bit_16x16/icon_2_sprite_115.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Sprites/icons_1bit_16x16/icon_2_sprite_095.png" type="Texture" id=2]
 
 [resource]
 script = ExtResource( 1 )
-machine_name = "HEALTH_QUANTITY"
-readable_name = "Health"
+machine_name = "HEALING_STAT"
+readable_name = "Healing"
 icon = ExtResource( 2 )
-taxonomy = ""
+taxonomy = "STAT"
 numerical_unit = 0
-quantity = 100.0
+quantity = 1.0
