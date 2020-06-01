@@ -54,6 +54,6 @@ func try_to_interact(actor:Node2D, direction:Vector2):
 
 func update_tile_position(start_cell:Vector2, target_cell:Vector2):
 	var cell_id = get_cellv(start_cell)
+	set_cellv(start_cell, get_cellv(target_cell))
 	set_cellv(target_cell, cell_id)
-	set_cellv(start_cell, CELL_TYPES.EMPTY)
 	return map_to_world(target_cell) + (cell_size / 2)

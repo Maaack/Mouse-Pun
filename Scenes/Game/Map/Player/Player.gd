@@ -34,6 +34,9 @@ onready var animated_sprite_node = $AnimatedSprite
 onready var tween_node = $Tween
 onready var grid_node = get_parent()
 
+export(int) var speed : int = 4
+export(float) var turn_time : float = 1.0
+
 var health_quantity_resource = preload("res://Resources/Abstract/Quantities/HealthQuantity.tres")
 var calories_quantity_resource = preload("res://Resources/Abstract/Quantities/Nutrients/Calories100.tres")
 var calories_quantity : AbstractQuantity
@@ -43,6 +46,7 @@ var body : AbstractContainer
 var inventory : AbstractContainer
 var stomach : AbstractSampler
 var selected_item : AbstractUnit setget set_selected_item
+var animated_sprite_node_position : Vector2
 
 var max_health : int = 100
 var last_move_direction : Vector2 = Vector2(0, 0)
@@ -50,6 +54,7 @@ var last_move_direction : Vector2 = Vector2(0, 0)
 func _ready():
 	animated_sprite_node.play(IDLE_ANIMATION)
 	animated_sprite_node.playing = true
+	animated_sprite_node_position = animated_sprite_node.position
 	body = AbstractContainer.new()
 	health_quantity = health_quantity_resource.duplicate()
 	calories_quantity = calories_quantity_resource.duplicate()
@@ -129,23 +134,23 @@ func _get_move_vector(input):
 
 func move_to(target_position:Vector2):
 	burn_calories(CALORIES_PER_MOVE)
-	animated_sprite_node.play(WALK_ANIMATION)
 	set_process(false)
 	set_process_input(false)
 	var sprite_frames = animated_sprite_node.get_sprite_frames()
-	var animate_speed = sprite_frames.get_frame_count(WALK_ANIMATION) / sprite_frames.get_animation_speed(WALK_ANIMATION)
+	sprite_frames.set_animation_speed(WALK_ANIMATION, sprite_frames.get_frame_count(WALK_ANIMATION) / turn_time)
 	var start_animation_position = animated_sprite_node.position + (position - target_position)
-	var end_animation_position = animated_sprite_node.position
-	tween_node.interpolate_property(animated_sprite_node, "position", start_animation_position, end_animation_position, animate_speed)
+	var end_animation_position = animated_sprite_node_position
+	tween_node.interpolate_property(animated_sprite_node, "position", start_animation_position, end_animation_position, turn_time)
 	position = target_position
 	animated_sprite_node.position = start_animation_position
+	animated_sprite_node.play(WALK_ANIMATION)
 	tween_node.start()
 
 func roll_to(target_position:Vector2):
 	set_process(false)
 	set_process_input(false)
 	var start_animation_position = animated_sprite_node.position + (position - target_position)
-	var end_animation_position = animated_sprite_node.position
+	var end_animation_position = animated_sprite_node_position
 	var animate_speed = KNOCKBACK_TIME
 	tween_node.interpolate_property(animated_sprite_node, "position", start_animation_position, end_animation_position, animate_speed)
 	position = target_position
@@ -163,7 +168,7 @@ func bump_against():
 	animated_sprite_node.play(HURT_ANIMATION)
 
 func start_turn():
-	var result = _wait_to_idle()
+	var result = wait_to_idle()
 	if result is GDScriptFunctionState:
 		yield(result, "completed")
 	_pickup_from_position(position)
@@ -172,11 +177,14 @@ func start_turn():
 	set_process(true)
 	set_process_input(true)
 
-func _wait_to_idle():
+func wait_to_idle():
+	if animated_sprite_node.animation == IDLE_ANIMATION:
+		return
 	if animated_sprite_node.is_playing():
-		yield(animated_sprite_node,"animation_finished")
+		yield(animated_sprite_node, "animation_finished")
 	if tween_node.is_active():
 		yield(tween_node, "tween_all_completed")
+		animated_sprite_node.position = animated_sprite_node_position
 	animated_sprite_node.play(IDLE_ANIMATION)
 	return
 
@@ -187,7 +195,7 @@ func update_health(value:int):
 	if value > 0 and health_quantity.quantity < max_health:
 		var max_healing = max_health - health_quantity.quantity
 		value = min(value, max_healing)
-	elif value < 0 and health_quantity.quantity > 0:
+	elif value < 0 and health_quantity.quantity >= 0:
 		value = max(value, -health_quantity.quantity)
 	if value == 0:
 		return
@@ -270,3 +278,9 @@ func _get_vision_range():
 		quantity.quantity -= spendable
 		vision_range += spendable
 	return vision_range
+
+func get_speed():
+	return speed
+
+func _on_AnimatedSprite_animation_finished():
+	animated_sprite_node.stop()

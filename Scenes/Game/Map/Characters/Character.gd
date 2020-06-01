@@ -22,8 +22,15 @@ onready var grid_node = get_parent()
 
 export(Vector2) var move_direction : Vector2 = UP_VECTOR
 
+var turn_time : float = 1.0 setget set_turn_time
+
+func set_turn_time(value:float):
+	turn_time = value
+
 func start_turn():
-	_wait_to_idle()
+	var result = wait_to_idle()
+	if result is GDScriptFunctionState:
+		yield(result, "completed")
 	try_to_move()
 	end_turn()
 
@@ -38,15 +45,15 @@ func try_to_move():
 	else:
 		move_direction = -move_direction
 
-func move_to(target_position:Vector2, duration=0):
+func move_to(target_position:Vector2):
 	var start_animation_position = animated_sprite_node.position + (position - target_position)
 	var end_animation_position = animated_sprite_node.position
-	tween_node.interpolate_property(animated_sprite_node, "position", start_animation_position, end_animation_position, duration)
+	tween_node.interpolate_property(animated_sprite_node, "position", start_animation_position, end_animation_position, turn_time)
 	position = target_position
 	animated_sprite_node.position = start_animation_position
 	tween_node.start()
 
-func _wait_to_idle():
+func wait_to_idle():
 	if tween_node.is_active():
 		yield(tween_node, "tween_all_completed")
 	return
