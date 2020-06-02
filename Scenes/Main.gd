@@ -36,6 +36,8 @@ func _start_ready_game():
 	player_node.connect("death", self, "_on_Player_death")
 	hud_node.update_quickslots(player_node.quickslot_manager.slot_array)
 	hud_node.update_selected(player_node.quickslot_manager.selected_slot)
+	hud_node.add_message("You emerge from your lair, weak, and starving.")
+	hud_node.add_message("Your vision is blurry, but you see food nearby!")
 	game_node.start_game()
 
 func _on_Player_body_updated(container:AbstractContainer):

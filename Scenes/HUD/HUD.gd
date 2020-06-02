@@ -3,6 +3,7 @@ extends Control
 
 onready var body_information_node = $MarginContainer/Control/TopLeft/BodyInformation
 onready var quickslots_node = $MarginContainer/Control/CenterBottom/Quickslots
+onready var messages_node = $MarginContainer/Control/TopRight/Messages
 
 func update_body_container(container:AbstractContainer):
 	if container == null:
@@ -24,3 +25,6 @@ func update_quickslots(slots:Array):
 
 func update_selected(index:int):
 	quickslots_node.update_selected(index)
+
+func add_message(message:String):
+	messages_node.add_message(message)
