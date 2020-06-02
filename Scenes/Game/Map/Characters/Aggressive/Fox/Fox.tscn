@@ -6,6 +6,7 @@
 
 [node name="Fox" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
+readable_name = "Fox"
 speed = 8
 attack_damage = 50
 

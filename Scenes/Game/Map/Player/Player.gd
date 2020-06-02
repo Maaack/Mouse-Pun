@@ -25,14 +25,18 @@ const KNOCKBACK_TIME = 0.2
 
 signal death
 signal picked_up
-signal quantity_updated
+signal ate_food
+signal moved
+signal failed_action_eat
+signal failed_action_move
+signal damaged
 signal body_updated
 signal reveal_tile
 signal turn_taken
+signal quickslots_updated
 signal quickslot_selected
 signal stats_updated
 signal speed_updated
-signal quickslots_updated
 
 onready var animated_sprite_node = $Sprite/AnimatedSprite
 onready var sprite_node = $Sprite
@@ -83,7 +87,10 @@ func _get_action(input):
 	if input.is_action_pressed("ui_accept"):
 		var selected_item = get_selected_item()
 		if is_instance_valid(selected_item):
-			return _act_on_inventory_item(selected_item)
+			var item = _act_on_inventory_item(selected_item)
+			if not is_instance_valid(item):
+				emit_signal("failed_action_eat")
+			return item
 	if input.is_action_pressed("ui_select"):
 		return wait()
 	if input.is_action_pressed("ui_slot_1"):
@@ -129,8 +136,10 @@ func _act_on_inventory_item(item:AbstractUnit):
 		EDIBLE:
 			var eaten = _eat(item)
 			if eaten:
+				emit_signal("ate_food", eaten)
 				$EatingAudioStream.play()
 				remove_from_inventory(eaten)
+			return eaten
 
 func _eat(item:AbstractContainer):
 	if item == null:
@@ -196,6 +205,7 @@ func move_to(target_position:Vector2):
 	tween_node.start()
 	$AnimationPlayer.play(WALK_ANIMATION)
 	$WalkingAudioStream.play()
+	emit_signal("moved", self, target_position)
 
 func roll_to(target_position:Vector2):
 	set_process(false)
@@ -209,6 +219,7 @@ func roll_to(target_position:Vector2):
 	tween_node.start()
 	animated_sprite_node.play(ROLL_ANIMATION)
 	$SqueakAudioStream.play()
+	emit_signal("moved", self, target_position)
 
 func knock_back(direction:Vector2):
 	var target_position = grid_node.try_move(self, direction)
@@ -268,8 +279,11 @@ func update_health(value:int):
 func heal(value:int):
 	return update_health(value)
 
-func damage(value:int):
+func damage(value:int, from:String = ''):
+	if value == null or value <= 0:
+		return
 	var return_health = update_health(-value)
+	emit_signal("damaged", value, from)
 	if is_dead():
 		emit_signal("death")
 		set_process(false)
@@ -333,8 +347,7 @@ func _digest_stomach_contents():
 	stomach.update_quantities()
 	var sample : AbstractContainer = stomach.sample(metabolism)
 	if sample == null:
-		print("Hungry")
-		damage(3)
+		damage(3, "Starvation")
 		return
 	body.add_contents(sample.contents)
 	emit_signal("body_updated", body)

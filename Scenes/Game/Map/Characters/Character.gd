@@ -22,6 +22,7 @@ onready var animated_sprite_node = $Sprite/AnimatedSprite
 onready var tween_node = $Tween
 onready var grid_node = get_parent()
 
+export(String) var readable_name : String = 'Character'
 export(Vector2) var move_direction : Vector2 = UP_VECTOR
 export(int) var speed = 6
 

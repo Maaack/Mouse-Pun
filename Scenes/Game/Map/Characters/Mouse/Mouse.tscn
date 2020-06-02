@@ -4,6 +4,7 @@
 [ext_resource path="res://Scenes/Game/Map/Characters/Mouse/MouseSpriteFrames.tres" type="SpriteFrames" id=2]
 
 [node name="Mouse" instance=ExtResource( 1 )]
+readable_name = "Mouse"
 
 [node name="AnimatedSprite" parent="Sprite" index="0"]
 frames = ExtResource( 2 )

@@ -4,6 +4,7 @@
 [ext_resource path="res://Scenes/Game/Map/Characters/Character.tscn" type="PackedScene" id=6]
 
 [node name="Chick" instance=ExtResource( 6 )]
+readable_name = "Chick"
 speed = 4
 
 [node name="AnimatedSprite" parent="Sprite" index="0"]

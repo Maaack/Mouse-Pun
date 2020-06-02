@@ -34,7 +34,7 @@ func try_to_attack():
 
 func attack_target(character:Node2D):
 	if character.has_method("damage"):
-		character.damage(attack_damage)
+		character.damage(attack_damage, readable_name)
 
 func knock_back_target(character:Node2D, direction:Vector2):
 	if character.has_method("knock_back"):
