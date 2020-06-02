@@ -62,7 +62,6 @@ func _ready():
 	body = AbstractContainer.new()
 	health_quantity = health_quantity_resource.duplicate()
 	calories_quantity = calories_quantity_resource.duplicate()
-	max_health = health_quantity.quantity
 	body.add_content(health_quantity)
 	body.add_content(calories_quantity)
 	emit_signal("body_updated", body)
@@ -130,6 +129,7 @@ func _act_on_inventory_item(item:AbstractUnit):
 		EDIBLE:
 			var eaten = _eat(item)
 			if eaten:
+				$EatingAudioStream.play()
 				remove_from_inventory(eaten)
 
 func _eat(item:AbstractContainer):
@@ -291,10 +291,10 @@ func end_turn():
 
 func _pickup_from_position(vector:Vector2):
 	var container = map_node.pickup_from_position(vector)
-	if container is AbstractContainer:
+	if container is AbstractContainer and container.contents.size() > 0:
+		$PickupAudioStream.play()
 		for content in container.contents:
 			emit_signal("picked_up", content)
-			print("picked_up ", content)
 			if content is AbstractUnit:
 				add_to_inventory(content)
 
