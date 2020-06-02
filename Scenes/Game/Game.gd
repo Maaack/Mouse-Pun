@@ -73,7 +73,7 @@ func _on_Player_picked_up(item:AbstractUnit):
 				_send_message("Switch between multiple items with [0-9].")
 		CARROT_NAME:
 			picked_up_carrots += 1
-			if picked_up_nuts == 1:
+			if picked_up_carrots == 1:
 				_send_message("Carrots have vitamins for your eyes. Fiber, too!")
 				_send_message("Switch between multiple items with [0-9].")
 		APPLE_NAME:

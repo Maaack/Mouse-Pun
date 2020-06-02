@@ -90,7 +90,7 @@ func _get_action(input):
 			var item = _act_on_inventory_item(selected_item)
 			if not is_instance_valid(item):
 				emit_signal("failed_action_eat")
-			return item
+			end_turn()
 	if input.is_action_pressed("ui_select"):
 		return wait()
 	if input.is_action_pressed("ui_slot_1"):
@@ -145,7 +145,6 @@ func _eat(item:AbstractContainer):
 	if item == null:
 		return
 	if stomach.total_quantity and stomach.total_quantity.quantity > STOMACH_MAXIMUM:
-		print("You are full! " , stomach.total_quantity.quantity)
 		return
 	for content in item.contents:
 		if content is AbstractUnit:
@@ -156,7 +155,6 @@ func _eat(item:AbstractContainer):
 				DIGESTABLE:
 					stomach.add_content(content)
 	return item
-
 
 func _process_move_input():
 	var move_vector = _get_move_vector(Input)
@@ -251,7 +249,7 @@ func check_for_death():
 	if is_dead():
 		base_turn_time = 4.0
 		animated_sprite_node.play(ROLL_ANIMATION)
-		emit_signal("turn_taken", self)
+		end_turn()
 		return true
 	return false
 
