@@ -145,6 +145,7 @@ func move_to(target_position:Vector2):
 	animated_sprite_node.position = start_animation_position
 	animated_sprite_node.play(WALK_ANIMATION)
 	tween_node.start()
+	$WalkingAudioStream.play()
 
 func roll_to(target_position:Vector2):
 	set_process(false)
@@ -156,6 +157,7 @@ func roll_to(target_position:Vector2):
 	position = target_position
 	animated_sprite_node.position = start_animation_position
 	tween_node.start()
+	$SqueakAudioStream.play()
 
 func knock_back(direction:Vector2):
 	var target_position = grid_node.try_move(self, direction)
