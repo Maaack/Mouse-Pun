@@ -130,7 +130,11 @@ func _on_Player_damaged(amount:int, from:String = ''):
 			STARVATION_NAME:
 				damage_from_starvation += 1
 				if damage_from_starvation == 1:
-					_send_message("Your stomach aches! The food is so close!")
+					_send_message("Your stomach aches! The food is close!")
+				if damage_from_starvation == 4:
+					_send_message("Your body heals a little every move, but you're still hurting.")
+				if damage_from_starvation >= 6:
+					_send_message("You should eat food immediately!")
 			CAT_NAME:
 				damage_from_cats += 1
 				if damage_from_cats == 1:
