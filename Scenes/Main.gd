@@ -7,7 +7,6 @@ onready var game_node = $ViewportContainer/Viewport/Game
 
 func _ready():
 	player_node.connect("quantity_updated", self, "_on_Player_quantity_updated")
-	player_node.connect("body_updated", self, "_on_Player_body_updated")
 	player_node.connect("stats_updated", self, "_on_Player_body_updated")
 	game_node.start_game()
 

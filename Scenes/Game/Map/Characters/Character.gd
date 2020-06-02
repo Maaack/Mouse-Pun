@@ -28,8 +28,6 @@ export(int) var speed = 6
 var turn_time : float = 1.0 setget set_turn_time
 
 func set_turn_time(value:float):
-	if value != turn_time:
-		print("Updating turn time: %f -> %f " % [turn_time, value])
 	turn_time = value
 
 func start_turn():

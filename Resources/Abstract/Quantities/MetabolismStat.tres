@@ -1,7 +1,7 @@
 [gd_resource type="Resource" load_steps=3 format=2]
 
 [ext_resource path="res://Resources/Abstract/AbstractQuantity.gd" type="Script" id=1]
-[ext_resource path="res://Assets/Sprites/icons_1bit_16x16/icon_1_sprite_249.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Sprites/icons_1bit_16x16/icon_1_sprite_228.png" type="Texture" id=2]
 
 [resource]
 script = ExtResource( 1 )

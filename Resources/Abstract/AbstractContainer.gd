@@ -30,8 +30,10 @@ func _return_valid_array(array:Array):
 	return final_array
 
 func _reset_quantities():
-	if total_quantity:
-		total_quantity.quantity = 0
+	if total_quantity == null:
+		total_quantity = AbstractQuantity.new()
+		total_quantity.machine_name = TOTAL_QUANTITY
+	total_quantity.quantity = 0
 	for quantity in quantities:
 		if quantity is AbstractQuantity:
 			quantity.quantity = 0
@@ -63,10 +65,6 @@ func add_to_quantity(content:AbstractUnit):
 
 func add_to_total(content:AbstractUnit):
 	var quantity_to_add = _get_quantity_to_add(content)
-	if total_quantity == null:
-		total_quantity = AbstractQuantity.new()
-		total_quantity.machine_name = TOTAL_QUANTITY
-		total_quantity.quantity = 0
 	total_quantity.quantity += quantity_to_add
 
 func add_contents(values):

@@ -38,7 +38,7 @@ onready var tween_node = $Tween
 onready var grid_node = get_parent()
 
 export(int) var speed : int = 3
-export(float) var base_turn_time : float = 0.75
+export(float) var base_turn_time : float = 1.0
 
 var health_quantity_resource = preload("res://Resources/Abstract/Quantities/HealthQuantity.tres")
 var calories_quantity_resource = preload("res://Resources/Abstract/Quantities/Nutrients/Calories100.tres")
@@ -286,7 +286,6 @@ func _digest_stomach_contents():
 		var extra_metabolism = float(metabolism - stat_manager.BASE_METABOLISM)
 		quantity.quantity -= floor(extra_metabolism / stat_manager.BASE_METABOLISM)
 	stomach.update_quantities()
-	print("Stomach ", stomach)
 	var sample : AbstractContainer = stomach.sample(metabolism)
 	if sample == null:
 		print("Hungry")
@@ -310,11 +309,12 @@ func get_speed():
 	return int(stat_manager.speed_stat.quantity)
 
 func calculate_stats():
-	stat_manager.update_player_stats(body)
+	stat_manager.update_player_stats(body, stomach)
 	if stat_manager.speed_stat_diff != 0:
 		emit_signal("speed_updated")
 	if stat_manager.is_updated():
 		emit_signal("stats_updated", stat_manager.container)
 
 func get_turn_time():
-	return base_turn_time
+	var speed_adjust : float = min((get_speed() - 1) / 8, 0.5)
+	return base_turn_time - speed_adjust
