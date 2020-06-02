@@ -3,6 +3,7 @@ extends Node2D
 
 class_name Character
 
+const WALK_ANIMATION = 'walk'
 const DEAD_ANIMATION = 'dead'
 const FACE_UP_ANIMATION = 'face_up'
 const FACE_DOWN_ANIMATION = 'face_down'
@@ -16,7 +17,8 @@ const RIGHT_VECTOR = Vector2(1,0)
 
 signal turn_taken
 
-onready var animated_sprite_node = $AnimatedSprite
+onready var sprite_node = $Sprite
+onready var animated_sprite_node = $Sprite/AnimatedSprite
 onready var tween_node = $Tween
 onready var grid_node = get_parent()
 
@@ -26,6 +28,8 @@ export(int) var speed = 6
 var turn_time : float = 1.0 setget set_turn_time
 
 func set_turn_time(value:float):
+	if value != turn_time:
+		print("Updating turn time: %f -> %f " % [turn_time, value])
 	turn_time = value
 
 func start_turn():
@@ -47,11 +51,13 @@ func try_to_move():
 		move_direction = -move_direction
 
 func move_to(target_position:Vector2):
-	var start_animation_position = animated_sprite_node.position + (position - target_position)
-	var end_animation_position = animated_sprite_node.position
-	tween_node.interpolate_property(animated_sprite_node, "position", start_animation_position, end_animation_position, turn_time)
+	var start_animation_position = sprite_node.position + (position - target_position)
+	var end_animation_position = sprite_node.position
+	tween_node.interpolate_property(sprite_node, "position", start_animation_position, end_animation_position, turn_time)
 	position = target_position
-	animated_sprite_node.position = start_animation_position
+	sprite_node.position = start_animation_position
+	$AnimationPlayer.play(WALK_ANIMATION)
+	$AnimationPlayer.playback_speed = $AnimationPlayer.get_animation(WALK_ANIMATION).length / turn_time
 	tween_node.start()
 
 func wait_to_idle():

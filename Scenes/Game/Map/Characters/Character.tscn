@@ -1,15 +1,22 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Scenes/Game/Map/Characters/Aggressive/Cat/CatSpriteFrames.tres" type="SpriteFrames" id=1]
+[ext_resource path="res://Scenes/Game/Map/Characters/Animations/bounce.tres" type="Animation" id=2]
+[ext_resource path="res://Scenes/Game/Map/Characters/Animations/walk.tres" type="Animation" id=3]
 [ext_resource path="res://Scenes/Game/Map/Characters/Character.gd" type="Script" id=6]
-
 
 [node name="Character" type="Node2D"]
 script = ExtResource( 6 )
 
-[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+[node name="Tween" type="Tween" parent="."]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/bounce = ExtResource( 2 )
+anims/walk = ExtResource( 3 )
+
+[node name="Sprite" type="Node2D" parent="."]
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="Sprite"]
 scale = Vector2( 0.4, 0.4 )
 frames = ExtResource( 1 )
 animation = "face_down"
-
-[node name="Tween" type="Tween" parent="."]

@@ -9,5 +9,5 @@ script = ExtResource( 2 )
 speed = 8
 attack_damage = 50
 
-[node name="AnimatedSprite" parent="." index="0"]
+[node name="AnimatedSprite" parent="Sprite" index="0"]
 frames = ExtResource( 3 )

@@ -59,7 +59,7 @@ func _start_next_characters_turn():
 	if not current_character.is_connected("turn_taken", self, "_on_Character_turn_taken"):
 		current_character.connect("turn_taken", self, "_on_Character_turn_taken")
 	if current_character.has_method("set_turn_time"):
-		var relative_turn_time = (player_node.get_turn_time() / pow(2, current_character.get_speed() - player_node.get_speed())) * 0.8
+		var relative_turn_time = player_node.get_turn_time() / pow(2, 1 + current_character.get_speed() - player_node.get_speed())
 		current_character.set_turn_time(relative_turn_time)
 	current_character.start_turn()
 

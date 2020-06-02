@@ -32,4 +32,9 @@ animations = [ {
 "loop": false,
 "name": "face_right",
 "speed": 5.0
+}, {
+"frames": [ ExtResource( 3 ), ExtResource( 1 ), ExtResource( 4 ), ExtResource( 5 ) ],
+"loop": false,
+"name": "roll",
+"speed": 8.0
 } ]

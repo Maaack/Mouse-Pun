@@ -1,29 +1,21 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=8 format=2]
 
-[ext_resource path="res://Scenes/Game/Map/Player/OldCatSpriteFrames.tres" type="SpriteFrames" id=1]
+[ext_resource path="res://Scenes/Game/Map/Characters/Mouse/MouseSpriteFrames.tres" type="SpriteFrames" id=1]
 [ext_resource path="res://Scenes/Game/Map/Player/AnimatedSprite.gd" type="Script" id=2]
 [ext_resource path="res://Assets/Sounds/mouse_squeak.ogg" type="AudioStream" id=3]
 [ext_resource path="res://Assets/Sounds/footstep_sound.ogg" type="AudioStream" id=4]
+[ext_resource path="res://Scenes/Game/Map/Characters/Animations/bounce.tres" type="Animation" id=5]
+[ext_resource path="res://Scenes/Game/Map/Characters/Animations/walk.tres" type="Animation" id=6]
 [ext_resource path="res://Scenes/Game/Map/Player/Player.gd" type="Script" id=47]
 
 [node name="Player" type="Node2D"]
 script = ExtResource( 47 )
 
-[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
-position = Vector2( 0, -2 )
-scale = Vector2( 0.063, 0.063 )
-frames = ExtResource( 1 )
-animation = "walk"
-script = ExtResource( 2 )
-
-[node name="Camera2D" type="Camera2D" parent="AnimatedSprite"]
-position = Vector2( 0, 207.433 )
-scale = Vector2( 15.873, 15.873 )
-current = true
-zoom = Vector2( 0.5, 0.5 )
-smoothing_enabled = true
-
 [node name="Tween" type="Tween" parent="."]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/bounce = ExtResource( 5 )
+anims/walk = ExtResource( 6 )
 
 [node name="SqueakAudioStream" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource( 3 )
@@ -32,4 +24,18 @@ volume_db = -15.0
 [node name="WalkingAudioStream" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource( 4 )
 volume_db = -30.0
-[connection signal="animation_finished" from="AnimatedSprite" to="AnimatedSprite" method="_on_AnimatedSprite_animation_finished"]
+
+[node name="Sprite" type="Node2D" parent="."]
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="Sprite"]
+scale = Vector2( 0.4, 0.4 )
+frames = ExtResource( 1 )
+animation = "face_down"
+script = ExtResource( 2 )
+
+[node name="Camera2D" type="Camera2D" parent="Sprite/AnimatedSprite"]
+scale = Vector2( 15.873, 15.873 )
+current = true
+zoom = Vector2( 0.5, 0.5 )
+smoothing_enabled = true
+[connection signal="animation_finished" from="Sprite/AnimatedSprite" to="Sprite/AnimatedSprite" method="_on_AnimatedSprite_animation_finished"]
