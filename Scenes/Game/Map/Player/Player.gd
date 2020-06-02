@@ -28,9 +28,10 @@ signal quantity_updated
 signal body_updated
 signal reveal_tile
 signal turn_taken
-signal inventory_slot_selected
+signal quickslot_selected
 signal stats_updated
 signal speed_updated
+signal quickslots_updated
 
 onready var animated_sprite_node = $Sprite/AnimatedSprite
 onready var sprite_node = $Sprite
@@ -48,12 +49,12 @@ var map_node : Map2D
 var body : AbstractContainer
 var inventory : AbstractContainer
 var stomach : AbstractSampler
-var selected_item : AbstractUnit setget set_selected_item
 var sprite_node_position : Vector2
 
 var max_health : int = 100
 var last_move_direction : Vector2 = Vector2(0, 0)
 var stat_manager = preload("res://Scenes/Game/Map/Player/StatManager.gd").new()
+var quickslot_manager = preload("res://Scenes/Game/Map/Player/QuickslotManager.gd").new()
 
 func _ready():
 	sprite_node_position = sprite_node.position
@@ -80,13 +81,46 @@ func _input(event):
 
 func _get_action(input):
 	if input.is_action_pressed("ui_accept"):
+		var selected_item = get_selected_item()
 		if is_instance_valid(selected_item):
 			return _act_on_inventory_item(selected_item)
 	if input.is_action_pressed("ui_select"):
 		return wait()
 	if input.is_action_pressed("ui_slot_1"):
-		emit_signal("inventory_slot_selected", 1)
-		
+		quickslot_manager.select_slot(0)
+		emit_signal("quickslot_selected", 0)
+	elif input.is_action_pressed("ui_slot_2"):
+		quickslot_manager.select_slot(1)
+		emit_signal("quickslot_selected", 1)
+	elif input.is_action_pressed("ui_slot_3"):
+		quickslot_manager.select_slot(2)
+		emit_signal("quickslot_selected", 2)
+	elif input.is_action_pressed("ui_slot_4"):
+		quickslot_manager.select_slot(3)
+		emit_signal("quickslot_selected", 3)
+	elif input.is_action_pressed("ui_slot_5"):
+		quickslot_manager.select_slot(4)
+		emit_signal("quickslot_selected", 4)
+	elif input.is_action_pressed("ui_slot_6"):
+		quickslot_manager.select_slot(5)
+		emit_signal("quickslot_selected", 5)
+	elif input.is_action_pressed("ui_slot_7"):
+		quickslot_manager.select_slot(6)
+		emit_signal("quickslot_selected", 6)
+	elif input.is_action_pressed("ui_slot_8"):
+		quickslot_manager.select_slot(7)
+		emit_signal("quickslot_selected", 7)
+	elif input.is_action_pressed("ui_slot_9"):
+		quickslot_manager.select_slot(8)
+		emit_signal("quickslot_selected", 8)
+	elif input.is_action_pressed("ui_slot_10"):
+		quickslot_manager.select_slot(9)
+		emit_signal("quickslot_selected", 9)
+
+func get_selected_item():
+	var quantity = quickslot_manager.get_selected_quantity()
+	if is_instance_valid(quantity) and quantity is AbstractQuantity:
+		return inventory.find_content(quantity.machine_name)
 
 func _act_on_inventory_item(item:AbstractUnit):
 	if item == null:
@@ -101,7 +135,7 @@ func _eat(item:AbstractContainer):
 	if item == null:
 		return
 	if stomach.total_quantity and stomach.total_quantity.quantity > STOMACH_MAXIMUM:
-		print("You are full! " , stomach.total_quantity  , " : " , stomach.total_quantity.quantity > STOMACH_MAXIMUM)
+		print("You are full! " , stomach.total_quantity.quantity)
 		return
 	for content in item.contents:
 		if content is AbstractUnit:
@@ -250,23 +284,16 @@ func add_to_inventory(content:AbstractUnit):
 	if content == null:
 		return
 	inventory.add_content(content)
-	if not is_instance_valid(selected_item):
-		selected_item = content
 	var quantity = inventory.find_quantity(content.machine_name)
-	emit_signal("quantity_updated", quantity)
+	quickslot_manager.add_quantity(quantity)
+	emit_signal("quickslots_updated", quickslot_manager.slot_array)
 
 func remove_from_inventory(content:AbstractUnit):
 	if content == null:
 		return
 	inventory.remove_content(content)
-	if selected_item == content:
-		selected_item = inventory.find_content(content.machine_name)
 	var quantity = inventory.find_quantity(content.machine_name)
-	emit_signal("quantity_updated", quantity)
-
-func set_selected_item(value:AbstractUnit):
-	if inventory.contents.has(value):
-		selected_item = value
+	emit_signal("quickslots_updated", quickslot_manager.slot_array)
 	
 func burn_calories(value:int):
 	if calories_quantity.quantity > 0:

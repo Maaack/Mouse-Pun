@@ -18,7 +18,9 @@ func add_container_to_body_information(container:AbstractContainer):
 	
 func add_quantity_to_body_information(quantity:AbstractQuantity):
 	body_information_node.add_quantity(quantity)
-	
 
-func add_quantity_to_quickslot(quantity:AbstractQuantity):
-	quickslots_node.add_quantity(quantity)
+func update_quickslots(slots:Array):
+	quickslots_node.update_quickslots(slots)
+
+func update_selected(index:int):
+	quickslots_node.update_selected(index)

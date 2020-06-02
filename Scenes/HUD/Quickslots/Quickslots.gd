@@ -4,36 +4,28 @@ extends HBoxContainer
 export(int, 0, 10) var quickslots_available : int = 10
 
 var quickslot_scene = preload("res://Scenes/HUD/Quickslots/Quickslot/Quickslot.tscn")
-var slot_array = []
+var slot_array : Array = []
 
-func _ready():
-	var quickslot_range = range(quickslots_available)
-	slot_array = quickslot_range.duplicate()
-	for i in quickslot_range:
+func setup_quickslots(slots:Array):
+	slot_array = slots.duplicate()
+	for i in range(slot_array.size()):
 		var instance = quickslot_scene.instance()
 		add_child(instance)
 		instance.slot = i+1
 		slot_array[i] = instance
 
-func get_next_empty():
-	for quickslot in slot_array:
-		if quickslot.quantity == null:
-			return quickslot
+func update_quickslots(slots:Array):
+	if slot_array.size() <  slots.size():
+		setup_quickslots(slots)
+	for i in range(slots.size()):
+		var quickslot = slot_array[i]
+		if not is_instance_valid(quickslot):
+			continue
+		quickslot.quantity = slots[i]
 
-func find(machine_name_query:String):
+func update_selected(index:int):
+	if index < 0 or index >= slot_array.size():
+		return
 	for quickslot in slot_array:
-		if quickslot.quantity != null:
-			var quantity = quickslot.quantity
-			if quantity is AbstractQuantity:
-				if quantity.machine_name == machine_name_query:
-					return quantity
-
-func add_quantity(quantity:AbstractQuantity):
-	if quantity == null:
-		return
-	var quickslot = find(quantity.machine_name)
-	if quickslot == null:
-		quickslot = get_next_empty()
-	if quickslot == null:
-		return
-	quickslot.quantity = quantity
+		quickslot.selected = false
+	slot_array[index].selected = true
