@@ -1,10 +1,11 @@
-[gd_resource type="Resource" load_steps=6 format=2]
+[gd_resource type="Resource" load_steps=7 format=2]
 
 [ext_resource path="res://Resources/Abstract/AbstractContainer.gd" type="Script" id=1]
 [ext_resource path="res://Resources/Abstract/Quantities/Nutrients/Calories100.tres" type="Resource" id=2]
 [ext_resource path="res://Assets/Sprites/icons32/farm_32_sprite_045.png" type="Texture" id=3]
 [ext_resource path="res://Resources/Abstract/Quantities/Nutrients/EyesightVitamin10.tres" type="Resource" id=4]
 [ext_resource path="res://Resources/Abstract/Quantities/Nutrients/HealingVitamin100.tres" type="Resource" id=5]
+[ext_resource path="res://Resources/Abstract/Quantities/Nutrients/MetabolismVitamin100.tres" type="Resource" id=6]
 
 [resource]
 script = ExtResource( 1 )
@@ -13,4 +14,4 @@ readable_name = "Broccoli"
 icon = ExtResource( 3 )
 taxonomy = "FOOD_ITEM"
 numerical_unit = 0
-contents = [ ExtResource( 2 ), ExtResource( 5 ), ExtResource( 4 ) ]
+contents = [ ExtResource( 2 ), ExtResource( 5 ), ExtResource( 6 ), ExtResource( 4 ), ExtResource( 4 ) ]

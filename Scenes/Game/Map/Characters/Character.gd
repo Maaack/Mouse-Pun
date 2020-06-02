@@ -21,6 +21,7 @@ onready var tween_node = $Tween
 onready var grid_node = get_parent()
 
 export(Vector2) var move_direction : Vector2 = UP_VECTOR
+export(int) var speed = 6
 
 var turn_time : float = 1.0 setget set_turn_time
 
@@ -68,3 +69,6 @@ func _face_direction(direction:Vector2):
 			animated_sprite_node.animation = FACE_LEFT_ANIMATION
 		RIGHT_VECTOR:
 			animated_sprite_node.animation = FACE_RIGHT_ANIMATION
+
+func get_speed():
+	return speed

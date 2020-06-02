@@ -1,15 +1,15 @@
 [gd_resource type="Resource" load_steps=6 format=2]
 
 [ext_resource path="res://Resources/Abstract/AbstractContainer.gd" type="Script" id=1]
-[ext_resource path="res://Resources/Abstract/Quantities/Nutrients/EyesightVitamin100.tres" type="Resource" id=2]
-[ext_resource path="res://Assets/Sprites/icons32/farm_32_sprite_000.png" type="Texture" id=3]
-[ext_resource path="res://Resources/Abstract/Quantities/Nutrients/MetabolismVitamin100.tres" type="Resource" id=4]
+[ext_resource path="res://Resources/Abstract/Quantities/Nutrients/Calories50.tres" type="Resource" id=2]
+[ext_resource path="res://Assets/Sprites/icons32/farm_32_sprite_004.png" type="Texture" id=3]
+[ext_resource path="res://Resources/Abstract/Quantities/Nutrients/MetabolismVitamin10.tres" type="Resource" id=4]
 [ext_resource path="res://Resources/Abstract/Quantities/Nutrients/Calories100.tres" type="Resource" id=5]
 
 [resource]
 script = ExtResource( 1 )
-machine_name = "CARROT"
-readable_name = "Carrot"
+machine_name = "MUSHROOM"
+readable_name = "Mushroom"
 icon = ExtResource( 3 )
 taxonomy = "FOOD_ITEM"
 numerical_unit = 0

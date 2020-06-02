@@ -22,7 +22,7 @@ var interval_length : int = 1024
 var current_interval : int = 0
 
 func start_game():
-	# fog_of_war_grid_node.visible = true
+	fog_of_war_grid_node.visible = true
 	player_node.connect("reveal_tile", self, "_on_Player_reveal_tile")
 	player_node.connect("speed_updated", self, "_on_Player_speed_updated")
 	_start_next_characters_turn()
@@ -59,7 +59,7 @@ func _start_next_characters_turn():
 	if not current_character.is_connected("turn_taken", self, "_on_Character_turn_taken"):
 		current_character.connect("turn_taken", self, "_on_Character_turn_taken")
 	if current_character.has_method("set_turn_time"):
-		var relative_turn_time = player_node.turn_time / pow(2, current_character.get_speed() - player_node.get_speed())
+		var relative_turn_time = (player_node.get_turn_time() / pow(2, current_character.get_speed() - player_node.get_speed())) * 0.8
 		current_character.set_turn_time(relative_turn_time)
 	current_character.start_turn()
 

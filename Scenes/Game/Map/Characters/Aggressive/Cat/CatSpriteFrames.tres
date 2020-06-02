@@ -1,8 +1,8 @@
 [gd_resource type="SpriteFrames" load_steps=6 format=2]
 
 [ext_resource path="res://Assets/Sprites/characters/Cat_Left.png" type="Texture" id=1]
-[ext_resource path="res://Assets/Sprites/characters/Cat_Right.png" type="Texture" id=2]
-[ext_resource path="res://Assets/Sprites/characters/Cat_Down.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Sprites/characters/Cat_Down.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Sprites/characters/Cat_Right.png" type="Texture" id=3]
 [ext_resource path="res://Assets/Sprites/characters/Cat_Dead.png" type="Texture" id=4]
 [ext_resource path="res://Assets/Sprites/characters/Cat_Up.png" type="Texture" id=5]
 
@@ -23,12 +23,12 @@ animations = [ {
 "name": "face_left",
 "speed": 5.0
 }, {
-"frames": [ ExtResource( 3 ) ],
+"frames": [ ExtResource( 2 ) ],
 "loop": false,
 "name": "face_down",
 "speed": 5.0
 }, {
-"frames": [ ExtResource( 2 ) ],
+"frames": [ ExtResource( 3 ) ],
 "loop": false,
 "name": "face_right",
 "speed": 5.0

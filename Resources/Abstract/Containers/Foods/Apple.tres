@@ -1,9 +1,10 @@
-[gd_resource type="Resource" load_steps=5 format=2]
+[gd_resource type="Resource" load_steps=6 format=2]
 
 [ext_resource path="res://Resources/Abstract/AbstractContainer.gd" type="Script" id=1]
 [ext_resource path="res://Resources/Abstract/Quantities/Nutrients/Calories100.tres" type="Resource" id=2]
 [ext_resource path="res://Assets/Sprites/icons32/farm_32_sprite_011.png" type="Texture" id=3]
-[ext_resource path="res://Resources/Abstract/Quantities/Nutrients/ImmunityVitamin100.tres" type="Resource" id=4]
+[ext_resource path="res://Resources/Abstract/Quantities/Nutrients/MetabolismVitamin10.tres" type="Resource" id=4]
+[ext_resource path="res://Resources/Abstract/Quantities/Nutrients/HealingVitamin10.tres" type="Resource" id=5]
 
 [resource]
 script = ExtResource( 1 )
@@ -12,4 +13,4 @@ readable_name = "Apple"
 icon = ExtResource( 3 )
 taxonomy = "FOOD_ITEM"
 numerical_unit = 0
-contents = [ ExtResource( 2 ), ExtResource( 2 ), ExtResource( 4 ) ]
+contents = [ ExtResource( 2 ), ExtResource( 2 ), ExtResource( 2 ), ExtResource( 5 ), ExtResource( 4 ) ]

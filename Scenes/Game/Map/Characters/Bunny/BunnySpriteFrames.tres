@@ -1,0 +1,35 @@
+[gd_resource type="SpriteFrames" load_steps=6 format=2]
+
+[ext_resource path="res://Assets/Sprites/characters/Rabbit_Down.png" type="Texture" id=1]
+[ext_resource path="res://Assets/Sprites/characters/Rabbit_Dead.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Sprites/characters/Rabbit_Up.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Sprites/characters/Rabbit_Right.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Sprites/characters/Rabbit_Left.png" type="Texture" id=5]
+
+[resource]
+animations = [ {
+"frames": [ ExtResource( 3 ) ],
+"loop": false,
+"name": "face_up",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 2 ) ],
+"loop": false,
+"name": "dead",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 5 ) ],
+"loop": false,
+"name": "face_left",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 1 ) ],
+"loop": false,
+"name": "face_down",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 4 ) ],
+"loop": false,
+"name": "face_right",
+"speed": 5.0
+} ]

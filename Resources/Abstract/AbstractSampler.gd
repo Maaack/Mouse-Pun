@@ -43,7 +43,7 @@ func _get_unit_of_content(content:AbstractUnit):
 
 func _update_sampleable_quantities():
 	sampleable_quantities = []
-	_update_quantities()
+	update_quantities()
 	for quantity in quantities:
 		if quantity is AbstractQuantity:
 			sampleable_quantities.append(quantity.duplicate())

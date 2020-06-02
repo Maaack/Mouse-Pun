@@ -20,7 +20,7 @@ func set_contents(value:Array):
 	if value == null:
 		return
 	contents = _return_valid_array(value)
-	_update_quantities()
+	update_quantities()
 	
 func _return_valid_array(array:Array):
 	var final_array : Array = []
@@ -30,11 +30,13 @@ func _return_valid_array(array:Array):
 	return final_array
 
 func _reset_quantities():
+	if total_quantity:
+		total_quantity.quantity = 0
 	for quantity in quantities:
 		if quantity is AbstractQuantity:
 			quantity.quantity = 0
 
-func _update_quantities():
+func update_quantities():
 	_reset_quantities()
 	for content in contents:
 		if content is AbstractUnit:
@@ -87,7 +89,7 @@ func add_content(value:AbstractUnit):
 			contents.append(value)
 	else:
 		contents.append(value)
-	_update_quantities()
+	update_quantities()
 	return contents
 
 func remove_contents(values):
@@ -105,12 +107,12 @@ func remove_content(value:AbstractUnit):
 		var content = find_content(value.machine_name)
 		if content is AbstractQuantity:
 			content.quantity -= value.quantity
-			_update_quantities()
+			update_quantities()
 			return
 	var index = contents.find(value)
 	if index >= 0:
 		contents.remove(index)
-		_update_quantities()
+		update_quantities()
 
 func find_quantity(machine_name_query:String):
 	for quantity in quantities:

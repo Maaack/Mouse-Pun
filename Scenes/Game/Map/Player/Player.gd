@@ -10,6 +10,7 @@ const HURT_ANIMATION = 'hurt'
 
 const EDIBLE = 'FOOD_ITEM'
 const DIGESTABLE = 'DIGESTABLE'
+const STOMACH_MAXIMUM = 1000.0
 
 const UP_VECTOR = Vector2(0,-1)
 const DOWN_VECTOR = Vector2(0,1)
@@ -32,7 +33,7 @@ onready var tween_node = $Tween
 onready var grid_node = get_parent()
 
 export(int) var speed : int = 3
-export(float) var turn_time : float = 1.0
+export(float) var base_turn_time : float = 1.0
 
 var health_quantity_resource = preload("res://Resources/Abstract/Quantities/HealthQuantity.tres")
 var calories_quantity_resource = preload("res://Resources/Abstract/Quantities/Nutrients/Calories100.tres")
@@ -89,26 +90,26 @@ func _act_on_inventory_item(item:AbstractUnit):
 		return
 	match item.taxonomy:
 		EDIBLE:
-			_eat(item, inventory)
-			remove_from_inventory(item)
+			var eaten = _eat(item)
+			if eaten:
+				remove_from_inventory(eaten)
 
-func _eat(item:AbstractContainer, from_container:AbstractContainer):
+func _eat(item:AbstractContainer):
 	if item == null:
 		return
-	var for_removal : Array = []
+	if stomach.total_quantity and stomach.total_quantity.quantity > STOMACH_MAXIMUM:
+		print("You are full! " , stomach.total_quantity  , " : " , stomach.total_quantity.quantity > STOMACH_MAXIMUM)
+		return
 	for content in item.contents:
 		if content is AbstractUnit:
-			print("content : ", content)
 			match content.taxonomy:
 				EDIBLE:
-					_eat(content, item)
-					from_container.remove_content(item)
+					_eat(content)
+					item.remove_content(content)
 				DIGESTABLE:
 					stomach.add_content(content)
-					for_removal.append(content)
-					print("Stomach ", stomach)
-	for content in for_removal:
-		from_container.remove_content(content)
+	return item
+
 
 func _process_move_input():
 	var move_vector = _get_move_vector(Input)
@@ -136,10 +137,10 @@ func move_to(target_position:Vector2):
 	set_process(false)
 	set_process_input(false)
 	var sprite_frames = animated_sprite_node.get_sprite_frames()
-	sprite_frames.set_animation_speed(WALK_ANIMATION, sprite_frames.get_frame_count(WALK_ANIMATION) / turn_time)
+	sprite_frames.set_animation_speed(WALK_ANIMATION, sprite_frames.get_frame_count(WALK_ANIMATION) / get_turn_time())
 	var start_animation_position = animated_sprite_node.position + (position - target_position)
 	var end_animation_position = animated_sprite_node_position
-	tween_node.interpolate_property(animated_sprite_node, "position", start_animation_position, end_animation_position, turn_time)
+	tween_node.interpolate_property(animated_sprite_node, "position", start_animation_position, end_animation_position, get_turn_time())
 	position = target_position
 	animated_sprite_node.position = start_animation_position
 	animated_sprite_node.play(WALK_ANIMATION)
@@ -170,9 +171,10 @@ func start_turn():
 	var result = wait_to_idle()
 	if result is GDScriptFunctionState:
 		yield(result, "completed")
-	calculate_stats()
-	_pickup_from_position(position)
 	_digest_stomach_contents()
+	calculate_stats()
+	_heal_self()
+	_pickup_from_position(position)
 	_reveal_neighboring_tiles()
 	set_process(true)
 	set_process_input(true)
@@ -192,7 +194,7 @@ func wait():
 	end_turn()
 
 func update_health(value:int):
-	if value > 0 and health_quantity.quantity < max_health:
+	if value > 0:
 		var max_healing = max_health - health_quantity.quantity
 		value = min(value, max_healing)
 	elif value < 0 and health_quantity.quantity >= 0:
@@ -206,6 +208,14 @@ func heal(value:int):
 
 func damage(value:int):
 	return update_health(-value)
+
+func _heal_self():
+	var healing = int(stat_manager.healing_stat.quantity)
+	var quantity = body.find_content(stat_manager.HEALING_VITAMIN)
+	if is_instance_valid(quantity):
+		var extra_healing = healing - stat_manager.BASE_HEALING
+		quantity.quantity -= extra_healing
+	heal(healing)
 
 func end_turn():
 	set_process(false)
@@ -244,7 +254,9 @@ func set_selected_item(value:AbstractUnit):
 		selected_item = value
 	
 func burn_calories(value:int):
-	add_calories(-value)
+	if calories_quantity.quantity > 0:
+		value = min(value, calories_quantity.quantity)
+		add_calories(-value)
 
 func add_calories(value:int):
 	if calories_quantity == null:
@@ -254,9 +266,16 @@ func add_calories(value:int):
 
 func _digest_stomach_contents():
 	var metabolism : int = int(stat_manager.metabolism_stat.quantity)
+	var quantity = body.find_content(stat_manager.METABOLISM_VITAMIN)
+	if is_instance_valid(quantity):
+		var extra_metabolism = float(metabolism - stat_manager.BASE_METABOLISM)
+		quantity.quantity -= floor(extra_metabolism / stat_manager.BASE_METABOLISM)
+	stomach.update_quantities()
+	print("Stomach ", stomach)
 	var sample : AbstractContainer = stomach.sample(metabolism)
 	if sample == null:
 		print("Hungry")
+		damage(3)
 		return
 	body.add_contents(sample.contents)
 	emit_signal("body_updated", body)
@@ -281,4 +300,7 @@ func calculate_stats():
 		emit_signal("speed_updated")
 	if stat_manager.is_updated():
 		emit_signal("stats_updated", stat_manager.container)
-	
+
+func get_turn_time():
+	var speed_adjust : float = min((get_speed() - 1) / 8, 0.5)
+	return base_turn_time - speed_adjust
