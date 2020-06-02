@@ -2,6 +2,5 @@
 
 [ext_resource path="res://Resources/DynamicFonts/AdvancedPixel7-20.tres" type="DynamicFont" id=1]
 
-
 [resource]
 default_font = ExtResource( 1 )

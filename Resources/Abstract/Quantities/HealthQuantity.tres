@@ -10,4 +10,4 @@ readable_name = "Health"
 icon = ExtResource( 2 )
 taxonomy = ""
 numerical_unit = 0
-quantity = 100.0
+quantity = 18.0

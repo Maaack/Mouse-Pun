@@ -23,6 +23,7 @@ const RIGHT_VECTOR = Vector2(1,0)
 
 const KNOCKBACK_TIME = 0.2
 
+signal death
 signal picked_up
 signal quantity_updated
 signal body_updated
@@ -220,16 +221,28 @@ func bump_against():
 	$AnimationPlayer.play(HURT_ANIMATION)
 
 func start_turn():
+	if check_for_death():
+		return
 	var result = wait_to_idle()
 	if result is GDScriptFunctionState:
 		yield(result, "completed")
+	_heal_self()
 	_digest_stomach_contents()
 	calculate_stats()
-	_heal_self()
-	_pickup_from_position(position)
+	if check_for_death():
+		return
 	_reveal_neighboring_tiles()
+	_pickup_from_position(position)
 	set_process(true)
 	set_process_input(true)
+
+func check_for_death():
+	if is_dead():
+		base_turn_time = 4.0
+		animated_sprite_node.play(ROLL_ANIMATION)
+		emit_signal("turn_taken", self)
+		return true
+	return false
 
 func wait_to_idle():
 	if animated_sprite_node.is_playing():
@@ -256,7 +269,12 @@ func heal(value:int):
 	return update_health(value)
 
 func damage(value:int):
-	return update_health(-value)
+	var return_health = update_health(-value)
+	if is_dead():
+		emit_signal("death")
+		set_process(false)
+		set_process_input(false)
+	return return_health
 
 func _heal_self():
 	var healing = int(stat_manager.healing_stat.quantity)
@@ -345,3 +363,6 @@ func calculate_stats():
 func get_turn_time():
 	var speed_adjust : float = min((get_speed() - 1) / 8, 0.5)
 	return base_turn_time - speed_adjust
+
+func is_dead():
+	return health_quantity.quantity <= 0
