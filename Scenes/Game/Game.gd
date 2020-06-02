@@ -48,6 +48,7 @@ func setup_player_events():
 	player.connect("picked_up", self, "_on_Player_picked_up")
 	player.connect("ate_food", self, "_on_Player_ate_food")
 	player.connect("damaged", self, "_on_Player_damaged")
+	player.connect("failed_action_eat", self, "_on_Player_failed_action_eat")
 
 func get_player():
 	return $Map/Interactives/Interactives/Player
@@ -132,7 +133,7 @@ func _on_Player_damaged(amount:int, from:String = ''):
 				if damage_from_starvation == 1:
 					_send_message("Your stomach aches! The food is close!")
 				if damage_from_starvation == 4:
-					_send_message("Your body heals a little every move, but you're still hurting.")
+					_send_message("Your body feels weak, but still recovers slightly.")
 				if damage_from_starvation >= 6:
 					_send_message("You should eat food immediately!")
 			CAT_NAME:
@@ -154,3 +155,7 @@ func _on_Player_damaged(amount:int, from:String = ''):
 					_send_message("How have you survived up until now?")
 	else:
 		_send_message("Took %d damage!" % [amount])
+
+func _on_Player_failed_action_eat():
+	_send_message("You are full! Rest [Space] and then eat [E] more fiber.")
+	
