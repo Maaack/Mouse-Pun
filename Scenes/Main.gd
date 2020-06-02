@@ -29,6 +29,7 @@ func _reset_game():
 	_start_ready_game()
 
 func _start_ready_game():
+	game_node.connect("send_message", self, "_on_Game_send_message")
 	var player_node = game_node.get_player()
 	player_node.connect("stats_updated", self, "_on_Player_body_updated")
 	player_node.connect("quickslots_updated", self, "_on_Player_quickslots_updated")
@@ -36,9 +37,10 @@ func _start_ready_game():
 	player_node.connect("death", self, "_on_Player_death")
 	hud_node.update_quickslots(player_node.quickslot_manager.slot_array)
 	hud_node.update_selected(player_node.quickslot_manager.selected_slot)
-	hud_node.add_message("You emerge from your lair, weak, and starving.")
-	hud_node.add_message("Your vision is blurry, but you see food nearby!")
 	game_node.start_game()
+
+func _on_Game_send_message(message:String):
+	hud_node.add_message(message)
 
 func _on_Player_body_updated(container:AbstractContainer):
 	for quantity in container.contents:
