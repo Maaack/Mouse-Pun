@@ -1,3 +1,5 @@
+class_name StatManager
+
 
 const CALORIES = 'CALORIES'
 const METABOLISM_VITAMIN = 'METABOLISM_VITAMIN'
@@ -77,41 +79,16 @@ func update_fullness_stat(stomach:AbstractContainer):
 	var boost_stat : int = floor(total_quantity / VITAMIN_STEP_SIZE)
 	var diff : int = (base_stat + boost_stat) - fullness_stat.quantity
 	fullness_stat.add_quantity(diff)
-	if diff > 0:
-		print("Your stomach has gotten fuller!")
-	elif diff < 0:
-		print("Your stomach feels emptier!")
 	return diff
-
 
 func update_metabolism_stat(body:AbstractContainer):
-	var diff : int = _update_stat(body, metabolism_stat, METABOLISM_VITAMIN, BASE_METABOLISM, VITAMIN_STEP_SIZE)
-	if diff > 0:
-		print("Your appetite grows!")
-	elif diff < 0:
-		print("Your appetite shrinks!")
-	return diff
+	return _update_stat(body, metabolism_stat, METABOLISM_VITAMIN, BASE_METABOLISM, VITAMIN_STEP_SIZE)
 
 func update_healing_stat(body:AbstractContainer):
-	var diff : int = _update_stat(body, healing_stat, HEALING_VITAMIN, BASE_HEALING, VITAMIN_STEP_SIZE)
-	if diff > 0:
-		print("Your body feels resilient!")
-	elif diff < 0:
-		print("Your body feels vulnerable!")
-	return diff
+	return _update_stat(body, healing_stat, HEALING_VITAMIN, BASE_HEALING, VITAMIN_STEP_SIZE)
 
 func update_speed_stat(body:AbstractContainer):
-	var diff : int = _update_stat(body, speed_stat, CALORIES, BASE_SPEED, CALORIES_STEP_SIZE)
-	if diff > 0:
-		print("You feel faster!")
-	elif diff < 0:
-		print("You feel slower!")
-	return diff
+	return _update_stat(body, speed_stat, CALORIES, BASE_SPEED, CALORIES_STEP_SIZE)
 
 func update_vision_stat(body:AbstractContainer):
-	var diff : int = _update_stat(body, vision_stat, EYESIGHT_VITAMIN, BASE_VISION, VITAMIN_STEP_SIZE)
-	if diff > 0:
-		print("Your vision has cleared!")
-	elif diff < 0:
-		print("Your vision has gotten foggier!")
-	return diff
+	return _update_stat(body, vision_stat, EYESIGHT_VITAMIN, BASE_VISION, VITAMIN_STEP_SIZE)

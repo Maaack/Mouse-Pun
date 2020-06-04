@@ -369,11 +369,16 @@ func calculate_stats():
 	if stat_manager.speed_stat_diff != 0:
 		emit_signal("speed_updated")
 	if stat_manager.is_updated():
-		emit_signal("stats_updated", stat_manager.container)
+		emit_signal("stats_updated", stat_manager)
 
 func get_turn_time():
-	var speed_adjust : float = min((get_speed() - 1) / 8, 0.5)
-	return base_turn_time - speed_adjust
+	var speed = get_speed()
+	var final_speed : float = base_turn_time
+	var over_base = speed - 3
+	if over_base > 0:
+		var speed_adjust = min(over_base*0.25, 0.75)
+		final_speed -= speed_adjust
+	return final_speed
 
 func is_dead():
 	return health_quantity.quantity <= 0

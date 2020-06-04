@@ -49,6 +49,7 @@ func setup_player_events():
 	player.connect("ate_food", self, "_on_Player_ate_food")
 	player.connect("damaged", self, "_on_Player_damaged")
 	player.connect("failed_action_eat", self, "_on_Player_failed_action_eat")
+	player.connect("stats_updated", self, "_on_Player_stats_updated")
 
 func get_player():
 	return $Map/Interactives/Interactives/Player
@@ -158,4 +159,31 @@ func _on_Player_damaged(amount:int, from:String = ''):
 
 func _on_Player_failed_action_eat():
 	_send_message("You are full! Rest [Space] and then eat [E] more fiber.")
-	
+
+func _on_Player_stats_updated(stat_manager:StatManager):
+	if stat_manager.vision_stat_diff > 0:
+		_send_message("Your vision gets clearer!")
+	elif stat_manager.vision_stat_diff < 0:
+		_send_message("Your vision gets foggier!")
+	if stat_manager.metabolism_stat_diff > 0:
+		_send_message("Your appetite grows!")
+	elif stat_manager.metabolism_stat_diff < 0:
+		_send_message("Your appetite shrinks!")
+	if stat_manager.speed_stat_diff > 0:
+		_send_message("You feel faster!")
+	elif stat_manager.speed_stat_diff < 0:
+		_send_message("You feel slower!")
+	if stat_manager.healing_stat_diff > 0:
+		_send_message("You feel more resilient!")
+	elif stat_manager.healing_stat_diff < 0:
+		_send_message("You feel more vulnerable!")
+	if stat_manager.fullness_diff > 0:
+		if stat_manager.fullness_stat.quantity >= 10:
+			_send_message("You are stuffed!")
+		elif stat_manager.fullness_stat.quantity >= 8:
+			_send_message("You are nearly full!")
+	elif stat_manager.fullness_diff < 0:
+		if stat_manager.fullness_stat.quantity <= 1:
+			_send_message("You are starving!")
+		elif stat_manager.fullness_stat.quantity <= 3:
+			_send_message("You are hungry!")

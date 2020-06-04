@@ -31,7 +31,7 @@ func _reset_game():
 func _start_ready_game():
 	game_node.connect("send_message", self, "_on_Game_send_message")
 	var player_node = game_node.get_player()
-	player_node.connect("stats_updated", self, "_on_Player_body_updated")
+	player_node.connect("stats_updated", self, "_on_Player_stats_updated")
 	player_node.connect("quickslots_updated", self, "_on_Player_quickslots_updated")
 	player_node.connect("quickslot_selected", self, "_on_Player_quickslot_selected")
 	player_node.connect("death", self, "_on_Player_death")
@@ -42,8 +42,8 @@ func _start_ready_game():
 func _on_Game_send_message(message:String):
 	hud_node.add_message(message)
 
-func _on_Player_body_updated(container:AbstractContainer):
-	for quantity in container.contents:
+func _on_Player_stats_updated(stat_manager:StatManager):
+	for quantity in stat_manager.container.contents:
 		hud_node.add_quantity_to_body_information(quantity)
 
 func _on_Player_quickslots_updated(slots:Array):
