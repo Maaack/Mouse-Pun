@@ -71,6 +71,17 @@ Source: [freesound.org](https://freesound.org/people/hargissssound/sounds/345852
 License: [CC0 1.0 Universal (CC0 1.0)
 Public Domain Dedication](https://creativecommons.org/publicdomain/zero/1.0/)
 
+### Fonts
+#### Counters and Death Screen Text
+Author: [Sizenko Alexander (Style 7)](http://www.styleseven.com)  
+Source: [1001fonts.com](https://www.1001fonts.com/mini-pixel-7-font.html)  
+License: [Free for Personal and Educational Use](./Assets/Fonts/mini-pixel-7/readme.txt)
+
+#### Message Text
+Author: [Sizenko Alexander (Style 7)](http://www.styleseven.com)  
+Source: [1001fonts.com](https://www.1001fonts.com/advanced-pixel-7-font.html)  
+License: [Free for Personal and Educational Use](./Assets/Fonts/advanced-pixel-7/readme.txt)
+
 ## Development Tools
 #### Godot
 Author: [Juan Linietsky, Ariel Manzur and contributors](https://godotengine.org/contact)  

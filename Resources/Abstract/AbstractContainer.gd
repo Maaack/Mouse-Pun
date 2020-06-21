@@ -21,7 +21,7 @@ func set_contents(value:Array):
 		return
 	contents = _return_valid_array(value)
 	update_quantities()
-	
+
 func _return_valid_array(array:Array):
 	var final_array : Array = []
 	for unit in array:

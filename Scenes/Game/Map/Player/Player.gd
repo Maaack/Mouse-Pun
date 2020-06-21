@@ -324,7 +324,7 @@ func remove_from_inventory(content:AbstractUnit):
 	inventory.remove_content(content)
 	var quantity = inventory.find_quantity(content.machine_name)
 	emit_signal("quickslots_updated", quickslot_manager.slot_array)
-	
+
 func burn_calories(value:int):
 	if calories_quantity.quantity > 0:
 		value = min(value, calories_quantity.quantity)
